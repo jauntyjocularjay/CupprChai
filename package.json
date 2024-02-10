@@ -1,0 +1,26 @@
+{
+  "name": "chaifunctions",
+  "version": "0.0.1",
+  "description": "Helper functions to streamline chai testing.",
+  "main": "ChaiFunctions.mjs",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test --exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GeorgeSchafer/ChaiFunctions.git"
+  },
+  "keywords": [
+    "chai",
+    "mocha"
+  ],
+  "author": "GeorgeSchafer",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/GeorgeSchafer/ChaiFunctions/issues"
+  },
+  "homepage": "https://github.com/GeorgeSchafer/ChaiFunctions#readme"
+}
