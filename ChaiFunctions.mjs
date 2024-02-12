@@ -30,7 +30,7 @@ export function is(bool){
 }
 
 export function getCounter(){
-    return `Test ${counter}:`
+    return `Test ${counter} - `
 }
 
 export function count(){
