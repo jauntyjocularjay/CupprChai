@@ -4,29 +4,50 @@ import { expect } from 'chai'
 
 let counter = 1
 
-export function valueMatch(subject, object, bool=true){
-    it(`${getCounter()} ${subject} ${is(bool)} equivalent to ${object}`, () => {
-        bool
-            ? expect(subject).to.eql(object)
-            : expect(subject).to.not.eql(object)
-    })
-    counter++
+export const threwError = ' threw an error'
+
+export function valueMatch(bool=true, subject, object=null){
+    try {
+        nullCheck(subject)
+        const description = getCounter() + subject + matches(bool) + object
+        it(description, () => {
+            bool
+                ? expect(subject).to.eql(object)
+                : expect(subject).to.not.eql(object)
+        })
+    } catch(error) {
+        const description = getCounter() + subject + matches(bool) + object
+        it(description + threwError, () => {
+            expect(true).to.eql(false)
+        })
+    } finally {
+        count()
+    }
 }
 
 export function have(bool){
     if(bool){
-        return 'have'
+        return ' have '
     } else {
-        return 'not have'
+        return ' not have '
     }
 }
 
 export function is(bool){
     if(bool){
-        return 'is'
+        return ' is '
     } else {
-        return 'is not'
+        return ' is not '
     }
+}
+
+export function matches(bool){
+    if(bool){
+        return ' matches '
+    } else {
+        return ' does not match '
+    }
+
 }
 
 export function getCounter(){
