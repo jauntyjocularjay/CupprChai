@@ -4,7 +4,7 @@ import { expect } from 'chai'
 
 let counter = 1
 
-function valueMatch(subject, object, bool=true){
+export function valueMatch(subject, object, bool=true){
     it(`${getCounter()} ${subject} ${is(bool)} equivalent to ${object}`, () => {
         bool
             ? expect(subject).to.eql(object)
@@ -13,7 +13,7 @@ function valueMatch(subject, object, bool=true){
     counter++
 }
 
-function have(bool){
+export function have(bool){
     if(bool){
         return 'have'
     } else {
@@ -21,7 +21,7 @@ function have(bool){
     }
 }
 
-function is(bool){
+export function is(bool){
     if(bool){
         return 'is'
     } else {
@@ -29,18 +29,16 @@ function is(bool){
     }
 }
 
-function getCounter(){
+export function getCounter(){
     return `Test ${counter}:`
 }
 
-function count(){
+export function count(){
     counter++
 }
 
-export {
-    count,
-    valueMatch,
-    getCounter,
-    have,
-    is
+export function nullCheck(value){
+    if(value === null){
+        throw new Error('nullCheck() failed')
+    }
 }
