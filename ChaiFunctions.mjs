@@ -8,7 +8,7 @@ export const threwError = ' threw an error'
 
 export function valueMatch(bool=true, subject, object=null){
     try {
-        nullCheck(subject)
+        const threwError = nullCheck(subject)
         const description = getCounter() + subject + matches(bool) + object
         it(description, () => {
             bool
@@ -16,12 +16,35 @@ export function valueMatch(bool=true, subject, object=null){
                 : expect(subject).to.not.eql(object)
         })
     } catch(error) {
+        const threwError = true
         const description = getCounter() + subject + matches(bool) + object
         it(description + threwError, () => {
             expect(true).to.eql(false)
         })
     } finally {
         count()
+        return threwError
+    }
+}
+
+export function throwsError(functionName, test, param=null, bool=true, error=Error){
+    const description = getCounter() + functionName + did(bool) + 'throw ' + error.name
+    const fn = () => {test(param)}
+
+    it(description,() => {
+        bool
+            ? expect(fn).to.throw(error)
+            : expect(fn).to.not.throw(error)
+    })
+
+    count()
+}
+
+export function did(bool=true){
+    if(bool){
+        return ' did '
+    } else {
+        return ' did NOT '
     }
 }
 
@@ -60,6 +83,8 @@ export function count(){
 
 export function nullCheck(value){
     if(value === null){
-        throw new Error('nullCheck() failed')
+        throw new TypeError('nullCheck() failed, argument is null')
+    } else {
+        return false
     }
 }
