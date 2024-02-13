@@ -2,33 +2,79 @@
 
 import { expect } from 'chai'
 
+/**
+ * @description Description constants and functions
+ */
 let counter = 1
 
-export const threwError = ' threw an error'
+const threwError = ' threw an error'
 
-export function valueMatch(bool=true, subject, object=null){
+function getCounter(){
+    return `Test ${counter} - `
+}
+
+function count(){
+    counter++
+    return getCounter()
+}
+
+function did(bool=true){
+    if(bool){
+        return ' did '
+    } else {
+        return ' did NOT '
+    }
+}
+
+function have(bool){
+    if(bool){
+        return ' have '
+    } else {
+        return ' NOT have '
+    }
+}
+
+function is(bool){
+    if(bool){
+        return ' is '
+    } else {
+        return ' is NOT '
+    }
+}
+
+function matches(bool){
+    if(bool){
+        return ' matches '
+    } else {
+        return ' does not match '
+    }
+
+}
+
+/**
+ * @description Test functions
+ */
+function valueMatch(subject, object=null, bool=true){
     try {
-        const threwError = nullCheck(subject)
-        const description = getCounter() + subject + matches(bool) + object
+        nullCheck(subject)
+        const description = getCounter() + `'${subject}'` + matches(bool) + `'${object}'`
         it(description, () => {
             bool
                 ? expect(subject).to.eql(object)
                 : expect(subject).to.not.eql(object)
         })
     } catch(error) {
-        const threwError = true
-        const description = getCounter() + subject + matches(bool) + object
+        const description = getCounter() + `'${subject}'` + matches(bool) + `'${object}'`
         it(description + threwError, () => {
             expect(true).to.eql(false)
         })
     } finally {
         count()
-        return threwError
     }
 }
 
-export function throwsError(functionName, test, param=null, bool=true, error=Error){
-    const description = getCounter() + functionName + did(bool) + 'throw ' + error.name
+function throwsError(functionName, test, param=null, bool=true, error=Error){
+    const description = getCounter() + `'${functionName}'` + did(bool) + 'throw ' + error.name
     const fn = () => {test(param)}
 
     it(description,() => {
@@ -40,51 +86,23 @@ export function throwsError(functionName, test, param=null, bool=true, error=Err
     count()
 }
 
-export function did(bool=true){
-    if(bool){
-        return ' did '
-    } else {
-        return ' did NOT '
-    }
-}
-
-export function have(bool){
-    if(bool){
-        return ' have '
-    } else {
-        return ' not have '
-    }
-}
-
-export function is(bool){
-    if(bool){
-        return ' is '
-    } else {
-        return ' is not '
-    }
-}
-
-export function matches(bool){
-    if(bool){
-        return ' matches '
-    } else {
-        return ' does not match '
-    }
-
-}
-
-export function getCounter(){
-    return `Test ${counter} - `
-}
-
-export function count(){
-    counter++
-}
-
-export function nullCheck(value){
+function nullCheck(value){
     if(value === null){
         throw new TypeError('nullCheck() failed, argument is null')
     } else {
         return false
     }
+}
+
+export {
+    threwError,
+    did,
+    have,
+    is,
+    matches,
+    getCounter,
+    count,
+    valueMatch,
+    throwsError,
+    nullCheck
 }
