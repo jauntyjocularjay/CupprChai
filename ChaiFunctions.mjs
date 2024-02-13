@@ -75,7 +75,9 @@ function valueMatch(subject, object=null, bool=true){
 
 function throwsError(functionName, test, param=null, bool=true, error=Error){
     const description = getCounter() + `'${functionName}'` + did(bool) + 'throw ' + error.name
-    const fn = () => {test(param)}
+    const fn = () => {
+        test(param)
+    }
 
     it(description,() => {
         bool
