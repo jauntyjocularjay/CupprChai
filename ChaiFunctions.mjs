@@ -28,7 +28,7 @@ function have(bool){
     if(bool){
         return ' have '
     } else {
-        return ' NOT have '
+        return ' does NOT have '
     }
 }
 
