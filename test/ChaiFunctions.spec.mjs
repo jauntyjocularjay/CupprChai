@@ -1,6 +1,7 @@
 import {
     threwError,
     did,
+    does,
     have,
     is,
     matches,
@@ -35,6 +36,8 @@ describe('ChaiFunctions.mjs', () => {
         valueMatch(is(true), ' is NOT ', false)
         valueMatch(is(false), ' is ', false)
         valueMatch(is(false), ' is NOT ')
+        valueMatch(does(true), ' does ')
+        valueMatch(does(false), ' does NOT ')
     })
     describe('Threw Error works', () => {
         throwsError('Throw new error', () => {throw new Error('Test error')})

@@ -1,11 +1,11 @@
 import { expect } from 'chai'
 
 /**
- * @description Description constants and functions
+ * @description Description variables, constants and functions
  */
-let counter = 1
-
 const threwError = ' threw an error'
+
+let counter = 1
 
 function getCounter(){
     return `Test ${counter} - `
@@ -24,11 +24,19 @@ function did(bool=true){
     }
 }
 
+function does(bool=true){
+    if(bool){
+        return ' does '
+    } else {
+        return ' does NOT '
+    }
+}
+
 function have(bool){
     if(bool){
         return ' have '
     } else {
-        return ' does NOT have '
+        return ' NOT have '
     }
 }
 
@@ -71,8 +79,16 @@ function valueMatch(subject, object=null, bool=true){
     }
 }
 
+function isNull(param,bool){
+    const description = `${getCounter()} ${param} ${is(bool)} null`
+
+    bool
+        ? expect(param).to.be.null
+        : expect(param).to.not.be.null
+}
+
 function throwsError(functionName, test, param=null, bool=true, error=Error){
-    const description = getCounter() + `'${functionName}'` + did(bool) + 'throw ' + error.name
+    const description = getCounter() + functionName + did(bool) + 'throw ' + error.name
     const fn = () => {
         test(param)
     }
@@ -97,6 +113,7 @@ function nullCheck(value){
 export {
     threwError,
     did,
+    does,
     have,
     is,
     matches,
