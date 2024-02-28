@@ -8,6 +8,7 @@ import {
     getCounter,
     count,
     valueMatch,
+    objectsMatch,
     throwsError,
     nullCheck
 } from '../ChaiFunctions.mjs'
@@ -38,6 +39,9 @@ describe('ChaiFunctions.mjs', () => {
         valueMatch(is(false), ' is NOT ')
         valueMatch(does(true), ' does ')
         valueMatch(does(false), ' does NOT ')
+    })
+    describe('object comparison', () => {
+        objectsMatch({foo: 'bar'}, {foo: 'bar'})
     })
     describe('Threw Error works', () => {
         throwsError('Throw new error', () => {throw new Error('Test error')})

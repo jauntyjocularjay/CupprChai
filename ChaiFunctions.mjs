@@ -79,6 +79,28 @@ function valueMatch(subject, object=null, bool=true){
     }
 }
 
+function objectsMatch(subject, target){
+    const description = getCounter() + `${subject} matches ${target} properties`
+
+    it(description,() => {
+        const subjectKeys = Object.keys(subject)
+        const targetKeys = Object.keys(target)
+        const subjectValues = Object.values(subject)
+        const targetValues = Object.values(target)
+
+        expect(subjectKeys.length).to.eql(targetKeys.length)
+        expect(subjectValues.length).to.eql(subjectValues.length)
+
+        let i = 0
+        subjectValues.forEach(subjectValue => {
+            expect(targetValues[i]).to.eql(subjectValue)
+            i++
+        })
+    })
+
+    count()
+}
+
 function isNull(param,bool){
     const description = `${getCounter()} ${param} ${is(bool)} null`
 
@@ -120,6 +142,7 @@ export {
     getCounter,
     count,
     valueMatch,
+    objectsMatch,
     throwsError,
     nullCheck
 }
