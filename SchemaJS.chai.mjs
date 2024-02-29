@@ -64,7 +64,7 @@ function compileKeywords(ajv, schema){
 }
 
 function schemaCorresponds(subject, alias, target, bool=true){
-    const description = alias + does(bool) + `correspond to response`
+    const description = getCounter() + alias + does(bool) + `correspond to response`
 
     const correspondsTo = () => {
         it(description, () => {
