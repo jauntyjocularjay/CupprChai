@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Ajv } from 'ajv'
+import Ajv from 'ajv'
 
 /**
  * @description Description variables, constants and functions
@@ -216,5 +216,6 @@ export {
     nullCheck,
     compileKeywords,
     SchemaTypeValue,
-    SchemaTypeProperty
+    SchemaTypeProperty,
+    schemaCorresponds
 }
