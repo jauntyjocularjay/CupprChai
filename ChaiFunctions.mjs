@@ -3,7 +3,7 @@ import {
     SchemaTypeValue,
     SchemaTypeProperty,
     schemaCorresponds
-} from './SchemaJS.chai.mjs'
+} from './SchemaJS.ext.mjs'
 import { expect } from 'chai'
 
 

@@ -42,12 +42,14 @@ function SchemaTypeValue(SchemaType, obj, bool=true){
 function SchemaTypeProperty(schema, type, bool=true){
     const description = getCounter() + schema.name + `Schema ${have(bool)} type: '${type}'`
 
-    it(description, () => {
-        bool
-            ? expect(schema.type).to.eql(type)
-            : expect(schema.type).to.not.eql(type)
-    })
-    count()
+    valueMatch(schema.type, type, true, description)
+
+    // it(description, () => {
+    //     bool
+    //         ? expect(schema.type).to.eql(type)
+    //         : expect(schema.type).to.not.eql(type)
+    // })
+    // count()
 }
 
 /**
