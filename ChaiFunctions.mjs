@@ -1,5 +1,12 @@
+import {
+    compileKeywords,
+    SchemaTypeValue,
+    SchemaTypeProperty,
+    schemaCorresponds
+} from './SchemaJS.chai.mjs'
 import { expect } from 'chai'
-import Ajv from 'ajv'
+
+
 
 /**
  * @description Description variables, constants and functions
@@ -61,10 +68,12 @@ function matches(bool){
 /**
  * @description Test functions
  */
-function valueMatch(subject, object=null, bool=true){
+function valueMatch(subject, object=null, bool=true, description=null){
     try {
         nullCheck(subject)
-        const description = getCounter() + `'${subject}'` + matches(bool) + `'${object}'`
+        description !== null
+            ? description = getCounter() + description
+            : description = getCounter() + `'${subject}'` + matches(bool) + `'${object}'`
         it(description, () => {
             bool
                 ? expect(subject).to.eql(object)
@@ -131,74 +140,6 @@ function nullCheck(value){
     } else {
         return false
     }
-}
-
-/**
- * Schema testing functions
- * @todo write tests for these functions
-*/
-
-function compileKeywords(ajv, schema){
-    const schemaKeywords = new Set(schema.keywords())
-
-    schemaKeywords.forEach(term => {
-        ajv.addKeyword(term)
-    })
-}
-
-function SchemaTypeValue(SchemaType, obj, bool=true){
-    let result = {
-        key: Object.keys(obj)[0],
-        value: Object.values(obj)[0]
-    }
-    const description = getCounter() + `SchemaType ${is(bool)} {${result.key}: '${result.value}'}`
-
-    it(description, () => {
-        bool
-            ? expect(SchemaType).to.eql(obj)
-            : expect(SchemaType).to.not.eql(obj)
-    })
-    count()
-}
-
-function SchemaTypeProperty(schema, type, bool=true){
-    const description = getCounter() + schema.name + `Schema ${have(bool)} type: '${type}'`
-
-    it(description, () => {
-        bool
-            ? expect(schema.type).to.eql(type)
-            : expect(schema.type).to.not.eql(type)
-    })
-    count()
-}
-
-/**
- * Schema & AJV testing functions
- * @todo write tests for these functions
-*/
-
-function schemaCorresponds(subject, target, bool=true){
-    const description = getCounter() + Schema + does(bool) + `correspond to response`
-
-    it(description, () => {
-        const correspondsTo = () => {
-            const ajv = new Ajv()
-            let validate
-            let valid
-
-            compileKeywords(ajv, target)
-
-            validate = ajv.compile(target)
-
-            valid = validate(subject)
-
-            bool
-                ? expect(valid).to.be.true
-                : expect(valid).to.be.false
-            if (!valid) {console.log(validate.errors)}
-        }
-        correspondsTo()
-    })
 }
 
 export {
