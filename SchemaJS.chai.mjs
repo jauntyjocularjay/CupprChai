@@ -12,6 +12,7 @@ import {
     throwsError,
     nullCheck
 } from './ChaiFunctions.mjs'
+import { expect } from 'chai'
 import Ajv from 'ajv'
 
 
