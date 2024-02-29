@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import 'ajv'
+import { Ajv } from 'ajv'
 
 /**
  * @description Description variables, constants and functions
@@ -177,11 +177,27 @@ function SchemaTypeProperty(schema, type, bool=true){
  * @todo write tests for these functions
 */
 
-function schemaCorresponds(){
-    const description = ''
-    
-    it(description, () => {
+function schemaCorresponds(target, bool=true){
+    const description = getCounter() + `Schema ${does(bool)} correspond to response`
 
+    it(description, () => {
+        const correspondsTo = () => {
+            const ajv = new Ajv()
+            let validate
+            let valid
+
+            compileKeywords(ajv, target)
+
+            validate = ajv.compile(target)
+
+            valid = validate(subject)
+
+            bool
+                ? expect(valid).to.be.true
+                : expect(valid).to.be.false
+            if (!valid) {console.log(validate.errors)}
+        }
+        correspondsTo()
     })
 }
 
