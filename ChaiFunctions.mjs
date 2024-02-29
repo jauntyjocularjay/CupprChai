@@ -177,7 +177,7 @@ function SchemaTypeProperty(schema, type, bool=true){
  * @todo write tests for these functions
 */
 
-function schemaCorresponds(target, bool=true){
+function schemaCorresponds(subject, target, bool=true){
     const description = getCounter() + `Schema ${does(bool)} correspond to response`
 
     it(description, () => {
