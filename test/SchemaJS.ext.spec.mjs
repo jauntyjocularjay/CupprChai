@@ -3,6 +3,7 @@ import {
     did,
     does,
     have,
+    has,
     is,
     matches,
     getCounter,
@@ -14,7 +15,7 @@ import {
     SchemaTypeValue,
     SchemaTypeProperty
 } from '../ChaiFunctions.mjs'
-import { Schema } from '../extensions/SchemaJS/Schema.mjs'
+import { ArraySchema, Schema } from '../extensions/SchemaJS/Schema.mjs'
 
 describe('Schema Extension', () => {
     describe('SchemaTypeValue()', () => {
@@ -26,10 +27,10 @@ describe('Schema Extension', () => {
     })
 
     describe('SchemaTypeProperty()', () => {
-        let target = 'object'
-        const schema = new Schema()
-        SchemaTypeProperty(schema, target)
+        let target = Schema.object
+        let schema = new Schema()
+        SchemaTypeProperty(schema, 'generic', target)
         schema.type = 'array'
-        SchemaTypeProperty(schema, target, false)
+        SchemaTypeProperty(schema, 'array', target, false)
     })
 })

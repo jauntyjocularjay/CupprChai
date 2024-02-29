@@ -42,7 +42,7 @@ describe('ChaiFunctions.mjs', () => {
         valueMatch(does(false), ' does NOT ')
     })
     describe('object comparison', () => {
-        objectsMatch({foo: 'bar'}, {foo: 'bar'})
+        objectsMatch({foo: 'bar'}, '{foo: "bar"}', {foo: 'bar'}, '{foo: "bar"}')
     })
     describe('Threw Error works', () => {
         throwsError('Throw new error', () => {throw new Error('Test error')})

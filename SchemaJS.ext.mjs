@@ -3,6 +3,7 @@ import {
     did,
     does,
     have,
+    has,
     is,
     matches,
     getCounter,
@@ -39,10 +40,10 @@ function SchemaTypeValue(SchemaType, obj, bool=true){
     // count()
 }
 
-function SchemaTypeProperty(schema, type, bool=true){
-    const description = getCounter() + schema.name + `Schema ${have(bool)} type: '${type}'`
+function SchemaTypeProperty(schema, alias, target, bool=true){
+    const description = getCounter() + alias + ` Schema ${has(bool)} {type: '${target.type}'}`
 
-    valueMatch(schema.type, type, true, description)
+    valueMatch(schema.type, target.type, bool, description)
 
     // it(description, () => {
     //     bool

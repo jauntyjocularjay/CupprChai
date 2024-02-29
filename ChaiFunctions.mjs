@@ -48,6 +48,14 @@ function have(bool){
     }
 }
 
+function has(bool){
+    if(bool){
+        return ' has '
+    } else {
+        return ' does NOT have '
+    }
+}
+
 function is(bool){
     if(bool){
         return ' is '
@@ -111,8 +119,8 @@ function valueMatch(subject, object=null, bool=true, description=null){
     }
 }
 
-function objectsMatch(subject, target){
-    const description = getCounter() + `${subject} matches ${target} properties`
+function objectsMatch(subject, subjectAlias, target, targetAlias){
+    const description = getCounter() + `${subjectAlias} matches ${targetAlias} properties`
 
     it(description,() => {
         const subjectKeys = Object.keys(subject)
@@ -169,6 +177,7 @@ export {
     did,
     does,
     have,
+    has,
     is,
     matches,
     getCounter,
