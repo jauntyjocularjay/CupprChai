@@ -63,10 +63,10 @@ function compileKeywords(ajv, schema){
 }
 
 function schemaCorresponds(subject, target, bool=true){
-    const description = getCounter() + Schema + does(bool) + `correspond to response`
+    const description = subject + does(bool) + `correspond to response`
 
-    it(description, () => {
-        const correspondsTo = () => {
+    const correspondsTo = () => {
+        it(description, () => {
             const ajv = new Ajv()
             let validate
             let valid
@@ -81,9 +81,9 @@ function schemaCorresponds(subject, target, bool=true){
                 ? expect(valid).to.be.true
                 : expect(valid).to.be.false
             if (!valid) {console.log(validate.errors)}
-        }
-        correspondsTo()
-    })
+        })
+    }
+    correspondsTo()
 }
 
 export {

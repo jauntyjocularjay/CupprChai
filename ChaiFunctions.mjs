@@ -68,6 +68,28 @@ function matches(bool){
 /**
  * @description Test functions
  */
+function isTrue(subject, bool=true, description=null){
+    try {
+        nullCheck(subject)
+        description !== null
+            ? description = getCounter() + description
+            : description = getCounter() + subject + is(bool) + 'true'
+
+        it(description, () => {
+            bool
+                ? expect(subject).to.be.true
+                : expect(subject).to.be.false
+        })
+    } catch (error) {
+        description = getCounter() + subject + is(bool) + 'true'
+        it(description + threwError, () => {
+            expect(true).to.eql(false)
+        })
+    } finally {
+        count()
+    }
+}
+
 function valueMatch(subject, object=null, bool=true, description=null){
     try {
         nullCheck(subject)
