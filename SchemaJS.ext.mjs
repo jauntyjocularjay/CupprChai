@@ -12,7 +12,7 @@ import {
     objectsMatch,
     throwsError,
     nullCheck
-} from './ChaiFunctions.mjs'
+} from './Chai.mjs'
 import { expect } from 'chai'
 import Ajv from 'ajv'
 
