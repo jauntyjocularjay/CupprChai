@@ -11,7 +11,7 @@ import {
     objectsMatch,
     throwsError,
     nullCheck
-} from '../ChaiFunctions.mjs'
+} from '../Chai.mjs'
 
 
 /**

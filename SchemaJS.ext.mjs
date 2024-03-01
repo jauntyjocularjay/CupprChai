@@ -94,6 +94,8 @@ function schemaCorresponds(subject, alias, target, bool=true){
                 : expect(valid).to.be.false
             
             if (!valid && bool) {console.log(validate.errors)}
+
+            decompileKeywords(ajv, target)
         })
         count()
     }

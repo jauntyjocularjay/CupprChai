@@ -15,7 +15,7 @@ import {
     SchemaTypeValue,
     SchemaTypeProperty,
     schemaCorresponds
-} from '../ChaiFunctions.mjs'
+} from '../Chai.mjs'
 import { decompileKeywords } from '../SchemaJS.ext.mjs'
 import { ArraySchema, Schema } from '../extensions/SchemaJS/Schema.mjs'
 
@@ -50,7 +50,6 @@ describe('Schema Extension', () => {
         })
 
         schemaCorresponds(subject, 'ego', target)
-        decompileKeywords(ajv, target)
 
         subject = {
             queen: 'another one bites the dust',
@@ -59,10 +58,6 @@ describe('Schema Extension', () => {
         }
 
         schemaCorresponds(subject, 'Queen', target, false)
-        decompileKeywords(ajv, target)
     })
 
-    describe('decompileKeywords()', () => {
-
-    })
 })
