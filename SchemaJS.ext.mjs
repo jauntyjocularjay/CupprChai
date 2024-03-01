@@ -66,6 +66,14 @@ function compileKeywords(ajv, schema){
     })
 }
 
+function decompileKeywords(ajv, schema){
+    const schemaKeywords = new Set(schema.keywords())
+
+    schemaKeywords.forEach(term => {
+        ajv.removeKeyword(term)
+    })
+}
+
 function schemaCorresponds(subject, alias, target, bool=true){
     const description = getCounter() + alias + does(bool) + `correspond to response`
 
@@ -94,6 +102,7 @@ function schemaCorresponds(subject, alias, target, bool=true){
 
 export {
     compileKeywords,
+    decompileKeywords,
     SchemaTypeValue,
     SchemaTypeProperty,
     schemaCorresponds
