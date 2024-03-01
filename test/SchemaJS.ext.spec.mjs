@@ -13,7 +13,8 @@ import {
     throwsError,
     nullCheck,
     SchemaTypeValue,
-    SchemaTypeProperty
+    SchemaTypeProperty,
+    schemaCorresponds
 } from '../ChaiFunctions.mjs'
 import { ArraySchema, Schema } from '../extensions/SchemaJS/Schema.mjs'
 
@@ -32,5 +33,29 @@ describe('Schema Extension', () => {
         SchemaTypeProperty(schema, 'generic', target)
         schema.type = 'array'
         SchemaTypeProperty(schema, 'array', target, false)
+    })
+
+    describe('schemaCorresponds() verifies schema', () => {
+        let subject = {
+            iRock: true,
+            iam: 'machine',
+            betterThan: 300
+        }
+
+        let target = new Schema({
+            iRock: Schema.boolean, 
+            iam: Schema.string, 
+            betterThan: Schema.number
+        })
+
+        schemaCorresponds(subject, 'ego', target)
+
+        subject = {
+            queen: 'another one bites the dust',
+            rocks: true,
+            hits: 54
+        }
+
+        schemaCorresponds(subject, 'Queen', target, false)
     })
 })

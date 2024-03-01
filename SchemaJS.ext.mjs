@@ -84,7 +84,8 @@ function schemaCorresponds(subject, alias, target, bool=true){
             bool
                 ? expect(valid).to.be.true
                 : expect(valid).to.be.false
-            if (!valid) {console.log(validate.errors)}
+            
+            if (!valid && bool) {console.log(validate.errors)}
         })
         count()
     }
