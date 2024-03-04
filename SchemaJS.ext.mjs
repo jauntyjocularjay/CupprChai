@@ -31,26 +31,12 @@ function SchemaTypeValue(SchemaType, obj, bool=true){
     const description = getCounter() + `SchemaType ${is(bool)} {${result.key}: '${result.value}'}`
 
     valueMatch(SchemaType, obj, bool, description)
-
-    // it(description, () => {
-    //     bool
-    //         ? expect(SchemaType).to.eql(obj)
-    //         : expect(SchemaType).to.not.eql(obj)
-    // })
-    // count()
 }
 
 function SchemaTypeProperty(schema, alias, target, bool=true){
     const description = getCounter() + alias + ` Schema ${has(bool)} {type: '${target.type}'}`
 
     valueMatch(schema.type, target.type, bool, description)
-
-    // it(description, () => {
-    //     bool
-    //         ? expect(schema.type).to.eql(type)
-    //         : expect(schema.type).to.not.eql(type)
-    // })
-    // count()
 }
 
 /**
