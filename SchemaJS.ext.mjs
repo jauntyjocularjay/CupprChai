@@ -36,7 +36,7 @@ function SchemaTypeValue(SchemaType, obj, bool=true){
 function SchemaTypeProperty(schema, alias, target, bool=true){
     const description = getCounter() + alias + ` Schema ${has(bool)} {type: '${target.type}'}`
 
-    valueMatch(schema.type, target.type, bool, description)
+    valueMatch(schema.type, target.valueOf().type, bool, description)
 }
 
 /**
