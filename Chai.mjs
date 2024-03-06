@@ -11,7 +11,7 @@ import { expect } from 'chai'
 /**
  * @description Description variables, constants and functions
  */
-const threwError = ' threw an error'
+const throwError = ' throw an error: '
 
 let counter = 1
 
@@ -90,7 +90,7 @@ function isTrue(subject, bool=true, description=null){
         })
     } catch (error) {
         description = getCounter() + subject + is(bool) + 'true'
-        it(description + threwError, () => {
+        it(description + throwError, () => {
             expect(true).to.eql(false)
         })
     } finally {
@@ -111,7 +111,7 @@ function valueMatch(subject, object=null, bool=true, description=null){
         })
     } catch(error) {
         const description = getCounter() + `'${subject}'` + matches(bool) + `'${object}'`
-        it(description + threwError, () => {
+        it(description + throwError, () => {
             expect(true).to.eql(false)
         })
     } finally {
@@ -150,7 +150,7 @@ function isNull(param,bool){
 }
 
 function throwsError(functionName, test, param=null, bool=true, error=Error){
-    const description = getCounter() + functionName + did(bool) + 'throw ' + error.name
+    const description = getCounter() + functionName + did(bool) + throwError + error.name
     const fn = () => {
         test(param)
     }
@@ -164,6 +164,20 @@ function throwsError(functionName, test, param=null, bool=true, error=Error){
     count()
 }
 
+function constructorThrowsError(nameStr, className, param=null, bool=true, error=Error){
+    const description = getCounter() + nameStr + 'constructor ' + did(bool) + throwError + error.name
+
+    const instance = () => {
+        new className(param)
+    }
+    
+    it(description, () => {
+        bool
+            ? expect(instance).to.throw(error)
+            : expect(instance).to.not.throw(error)
+    })
+}
+
 function nullCheck(value){
     if(value === null){
         throw new TypeError('nullCheck() failed, argument is null')
@@ -173,7 +187,7 @@ function nullCheck(value){
 }
 
 export {
-    threwError,
+    throwError as threwError,
     did,
     does,
     have,
@@ -185,6 +199,7 @@ export {
     valueMatch,
     objectsMatch,
     throwsError,
+    constructorThrowsError,
     nullCheck,
     compileKeywords,
     SchemaTypeValue,

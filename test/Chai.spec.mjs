@@ -1,5 +1,5 @@
 import {
-    threwError,
+    threwError as throwError,
     did,
     does,
     have,
@@ -10,7 +10,8 @@ import {
     valueMatch,
     objectsMatch,
     throwsError,
-    nullCheck
+    nullCheck,
+    constructorThrowsError
 } from '../Chai.mjs'
 
 
@@ -21,7 +22,7 @@ import {
 
 describe('ChaiFunctions.mjs', () => {
     describe('Description constants and functions', () => {
-        valueMatch(threwError, ' threw an error')
+        valueMatch(throwError, ' throw an error: ')
         valueMatch(getCounter(), 'Test 2 - ')
         valueMatch(getCounter(), 'Test 3 - ')
         count()
@@ -44,10 +45,14 @@ describe('ChaiFunctions.mjs', () => {
     describe('object comparison', () => {
         objectsMatch({foo: 'bar'}, '{foo: "bar"}', {foo: 'bar'}, '{foo: "bar"}')
     })
-    describe('Threw Error works', () => {
+    describe('Throws Error works', () => {
         throwsError('Throw new error', () => {throw new Error('Test error')})
         throwsError('nullCheck()', nullCheck, null)
         throwsError('valueMatch()', valueMatch, ['array'], false)
+    })
+
+    describe('constructorThrowsError() works', () => {
+        constructorThrowsError('Number constructor', Math, 'asdfadf')
     })
 })
 
