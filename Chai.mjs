@@ -176,6 +176,8 @@ function constructorThrowsError(nameStr, className, param=null, bool=true, error
             ? expect(instance).to.throw(error)
             : expect(instance).to.not.throw(error)
     })
+
+    count()
 }
 
 function nullCheck(value){
