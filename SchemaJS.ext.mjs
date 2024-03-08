@@ -69,6 +69,7 @@ function schemaCorresponds(subject, alias, target, bool=true){
             let validate
             let valid
 
+            decompileKeywords(ajv, target)
             compileKeywords(ajv, target)
 
             validate = ajv.compile(target)
