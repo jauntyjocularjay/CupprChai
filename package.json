@@ -1,6 +1,6 @@
 {
   "name": "chaifunctions",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Helper functions to streamline chai testing.",
   "main": "ChaiFunctions.mjs",
   "directories": {
