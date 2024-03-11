@@ -8,20 +8,14 @@ import { expect } from 'chai'
 
 
 
-/**
- * @description Description variables, constants and functions
- */
+/*** @description Description variables, constants and functions ***/
 const throwError = 'throw an error:'
 
-let counter = 1
+let counter = 0
 
 function getCounter(){
-    return `Test ${counter} -`
-}
-
-function count(){
     counter++
-    return getCounter()
+    return `Test ${counter} -`
 }
 
 function did(bool=true){
@@ -93,8 +87,6 @@ function isTrue(subject, bool=true, description=null){
         it(description + throwError, () => {
             expect(true).to.eql(false)
         })
-    } finally {
-        count()
     }
 }
 
@@ -137,8 +129,6 @@ function objectsMatch(subject, subjectAlias, target, targetAlias){
             i++
         })
     })
-
-    count()
 }
 
 function isNull(param,bool){
@@ -160,8 +150,6 @@ function throwsError(functionName, test, param=null, bool=true, error=Error){
             ? expect(fn).to.throw(error)
             : expect(fn).to.not.throw(error)
     })
-
-    count()
 }
 
 function constructorThrowsError(nameStr, className, param=null, bool=true, error=Error){
@@ -176,8 +164,6 @@ function constructorThrowsError(nameStr, className, param=null, bool=true, error
             ? expect(instance).to.throw(error)
             : expect(instance).to.not.throw(error)
     })
-
-    count()
 }
 
 function nullCheck(value){
@@ -189,7 +175,7 @@ function nullCheck(value){
 }
 
 export {
-    throwError as threwError,
+    throwError,
     did,
     does,
     have,
@@ -197,7 +183,6 @@ export {
     is,
     matches,
     getCounter,
-    count,
     valueMatch,
     objectsMatch,
     throwsError,
