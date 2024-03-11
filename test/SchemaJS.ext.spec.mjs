@@ -6,7 +6,6 @@ import {
     is,
     matches,
     getCounter,
-    count,
     valueMatch,
     objectsMatch,
     throwsError,

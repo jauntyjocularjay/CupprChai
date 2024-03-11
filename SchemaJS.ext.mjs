@@ -1,5 +1,5 @@
 import {
-    threwError,
+    throwError,
     did,
     does,
     have,
@@ -7,7 +7,6 @@ import {
     is,
     matches,
     getCounter,
-    count,
     valueMatch,
     objectsMatch,
     throwsError,
@@ -28,13 +27,13 @@ function SchemaTypeValue(SchemaType, obj, bool=true){
         key: Object.keys(obj)[0],
         value: Object.values(obj)[0]
     }
-    const description = getCounter() + `SchemaType ${is(bool)} {${result.key}: '${result.value}'}`
+    const description = `SchemaType ${is(bool)} {${result.key}: '${result.value}'}`
 
     valueMatch(SchemaType.valueOf(), obj, bool, description)
 }
 
 function SchemaTypeProperty(schema, alias, target, bool=true){
-    const description = getCounter() + alias + ` Schema ${has(bool)} {type: '${target.type}'}`
+    const description = `${alias} Schema ${has(bool)} {type: '${target.type}'}`
 
     valueMatch(schema.type, target.valueOf().type, bool, description)
 }
@@ -61,7 +60,7 @@ function decompileKeywords(ajv, schema){
 }
 
 function schemaCorresponds(subject, alias, target, bool=true){
-    const description = getCounter() + alias + does(bool) + `correspond to response`
+    const description = `${getCounter()} ${alias} ${does(bool)} correspond to response`
 
     const correspondsTo = () => {
         it(description, () => {
@@ -84,7 +83,6 @@ function schemaCorresponds(subject, alias, target, bool=true){
 
             decompileKeywords(ajv, target)
         })
-        count()
     }
     correspondsTo()
 }
