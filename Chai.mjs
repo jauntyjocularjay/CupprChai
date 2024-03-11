@@ -106,8 +106,6 @@ function valueMatch(subject, object=null, bool=true, description=null){
         it(description + throwError, () => {
             expect(true).to.eql(false)
         })
-    } finally {
-        count()
     }
 }
 

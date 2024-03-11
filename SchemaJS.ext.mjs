@@ -7,7 +7,6 @@ import {
     is,
     matches,
     getCounter,
-    count,
     valueMatch,
     objectsMatch,
     throwsError,
@@ -84,7 +83,6 @@ function schemaCorresponds(subject, alias, target, bool=true){
 
             decompileKeywords(ajv, target)
         })
-        count()
     }
     correspondsTo()
 }
