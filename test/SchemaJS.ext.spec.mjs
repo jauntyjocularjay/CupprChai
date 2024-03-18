@@ -9,12 +9,13 @@ import {
     valueMatch,
     objectsMatch,
     throwsError,
-    nullCheck,
+    nullCheck
+} from '../Chai.mjs'
+import { 
     SchemaTypeValue,
     SchemaTypeProperty,
     schemaCorresponds
-} from '../Chai.mjs'
-import { decompileKeywords } from '../SchemaJS.ext.mjs'
+} from '../SchemaJS.ext.mjs'
 import { ArraySchema, Schema } from '../extensions/SchemaJS/Schema.mjs'
 
 describe('Schema Extension', () => {
