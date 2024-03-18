@@ -1,9 +1,3 @@
-import {
-    compileKeywords,
-    SchemaTypeValue,
-    SchemaTypeProperty,
-    schemaCorresponds
-} from './SchemaJS.ext.mjs'
 import { expect } from 'chai'
 
 
@@ -185,9 +179,5 @@ export {
     objectsMatch,
     throwsError,
     constructorThrowsError,
-    nullCheck,
-    compileKeywords,
-    SchemaTypeValue,
-    SchemaTypeProperty,
-    schemaCorresponds
+    nullCheck
 }
