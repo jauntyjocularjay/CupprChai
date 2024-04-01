@@ -3,14 +3,21 @@ import {
     did,
     does,
     have,
+    has,
     is,
     matches,
     getCounter,
+    isTrue,
     valueMatch,
+    arraysMatch,
+    objectsAreEquivalent,
+    objectsAreEqual,
     objectsMatch,
+    stringsMatch,
+    isNull,
     throwsError,
-    nullCheck,
-    constructorThrowsError
+    constructorThrowsError,
+    nullCheck
 } from '../Chai.mjs'
 
 
@@ -33,6 +40,8 @@ describe('ChaiFunctions.mjs', () => {
         valueMatch(have(true), 'NOT have', false)
         valueMatch(have(false), 'have', false)
         valueMatch(have(false), 'NOT have')
+        valueMatch(has(true), 'has')
+        valueMatch(has(false), 'does not have')
         valueMatch(is(true), 'is')
         valueMatch(is(true), 'is NOT', false)
         valueMatch(is(false), 'is', false)
