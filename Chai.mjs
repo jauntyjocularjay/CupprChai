@@ -1,6 +1,4 @@
 import { expect } from 'chai'
-import { InvalidArrayError } from '../../ENUMJS/ENUM.mjs'
-import { InvalidInputError } from '../../Schema.mjs'
 
 
 
