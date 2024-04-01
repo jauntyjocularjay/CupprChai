@@ -284,13 +284,15 @@ function stringsEqual(subject, target, caseSensitive=true){
 function isNull(param, bool){
     const description = `${getCounter()} ${param} ${is(bool)} null`
 
-    bool
-        ? expect(param).to.be.null
-        : expect(param).to.not.be.null
+    it(description, () => {
+        bool
+            ? expect(param).to.be.null
+            : expect(param).to.not.be.null
+    })
 }
 
-function throwsError(functionName, test, param=null, bool=true, error=Error){
-    const description = `${getCounter()} ${functionName} ${did(bool)} ${throwError} ${error.name}`
+function throwsError(functionAlias, test, param=null, bool=true, error=Error){
+    const description = `${getCounter()} ${functionAlias} ${did(bool)} ${throwError} ${error.name}`
     const fn = () => {
         test(param)
     }
