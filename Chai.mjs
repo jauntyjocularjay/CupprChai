@@ -143,13 +143,13 @@ function objectsMatch(subject, target){
     for(const [key, value] of Object.entries(subject)){
         if( (typeof value !== typeof target[key]) ||
             
-            (mismatchingNulls(value, target[key])) ||
+            (nullsMismatch(value, target[key])) ||
 
-            (mismatchingObjects(value, target[key])) ||
+            (objectsMismatch(value, target[key])) ||
 
-            (mismatchingArrays(value, target[key])) ||
+            (arraysMismatch(value, target[key])) ||
 
-            (mismatchingStrings(value, target[key])) ||
+            (stringsMismatch(value, target[key])) ||
 
 
             (value !== target[key])) {
@@ -162,26 +162,33 @@ function objectsMatch(subject, target){
 }
 
 /** @todo tested implicitly by objectsAreEqual() */
-function mismatchingNulls(subject, target){
-    return subject === null && target === null && !subject === target
-}
-
-/** @todo tested implicitly by objectsAreEqual() */
-function mismatchingObjects(subject, target){
+function objectsMismatch(subject, target){
+/**
+ * @function
+ *      This is a testing class that is used in if-else statements for flow control.
+ * @param {object} subject 
+ * @param {object} target 
+ * @returns {boolean}
+ */
     return typeof subject === 'object' &&
         typeof target === 'object' &&
         !objectsEqual(subject, target)
 }
 
 /** @todo tested implicitly by objectsAreEqual() */
-function mismatchingArrays(subject, target){
+function nullsMismatch(subject, target){
+    return subject === null && target === null && !subject === target
+}
+
+/** @todo tested implicitly by objectsAreEqual() */
+function arraysMismatch(subject, target){
     return typeof subject === 'array' &&
         typeof target === 'array' &&
         !arraysEqual(subject, target)
 }
 
 /** @todo tested implicitly by objectsAreEqual() */
-function mismatchingStrings(subject, target){
+function stringsMismatch(subject, target){
     return typeof subject === 'string' &&
         typeof target === 'string' &&
         !stringsEqual(subject, target)
@@ -325,6 +332,14 @@ function nullCheck(value){
 }
 
 export {
+    // for testing only
+    arraysMatch,
+    arraysEqual,
+    arraysMismatch as mismatchingArrays,
+    objectsMismatch as mismatchingObjects,
+    stringsMismatch as mismatchingStrings,
+
+    // for use
     throwsAnError,
     did,
     does,
@@ -343,5 +358,5 @@ export {
     isNull,
     throwsError,
     constructorThrowsError,
-    nullCheck
+    nullCheck,
 }

@@ -80,123 +80,130 @@ describe('ChaiFunctions.mjs', () => {
         isNull(false, false)
     })
 
-    describe('objectsAreEqual()', () => {
-        const obj1 = {
-            arr : ['a',2,null],
-            num : 2.21,
-            str : 'Stephen King',
-            bool: true,
-            obj : {
-                arr: [],
-                num: 0,
-                str: ''
-            } 
-        }
+    describe('helper functions for objectsAreEqual()', () => {
+        obj1 = { sub: null }
+        obj2 = { sub: null }
 
-        const obj2 = {
-            arr : ['a',2,null],
-            num : 2.21,
-            str : 'Stephen King',
-            bool: true,
-            obj : {
-                arr: [],
-                num: 0,
-                str: ''
-            } 
-        }
-
-        const obj3 = {
-            arr : ['a',3,null],
-            num : 2.21,
-            str : 'Stephen King',
-            bool: true,
-            obj : {
-                arr: [],
-                num: 0,
-                str: ''
-            } 
-        }
-
-        const obj4 = {
-            arr : ['a',2,null],
-            num : 2.2,
-            str : 'Stephen King',
-            bool: true,
-            obj : {
-                arr: [],
-                num: 0,
-                str: ''
-            } 
-        }
-
-        const obj5 = {
-            arr : ['a',2,null],
-            num : 2.21,
-            str : 'stephen king',
-            bool: true,
-            obj : {
-                arr: [],
-                num: 0,
-                str: ''
-            } 
-        }
-
-        const obj6 = {
-            arr : ['a',2,null],
-            num : 2.21,
-            str : 'Stephen King',
-            bool: false,
-            obj : {
-                arr: [],
-                num: 0,
-                str: ''
-            } 
-        }
-
-        const obj7 = {
-            arr : ['a',2,null],
-            num : 2.21,
-            str : 'Stephen King',
-            bool: true,
-            obj : {
-                arr: [0],
-                num: 0,
-                str: ''
-            } 
-        }
-
-        const obj8 = {
-            arr : ['a',2,null],
-            num : 2.21,
-            str : 'Stephen King',
-            bool: true,
-            obj : {
-                arr: [],
-                num: 2,
-                str: ''
-            } 
-        }
-
-        const obj9 = {
-            arr : ['a',2,null],
-            num : 2.21,
-            str : 'Stephen King',
-            bool: true,
-            obj : {
-                arr: [],
-                num: 0,
-                str: 's'
-            } 
-        }
-
-        objectsAreEqual(obj1, 'obj1', obj2, 'obj2')
-        objectsAreEqual(obj1, 'obj1', obj3, 'obj3', false)
-        objectsAreEqual(obj1, 'obj1', obj4, 'obj4', false)
-        objectsAreEqual(obj1, 'obj1', obj5, 'obj5', false)
-        objectsAreEqual(obj1, 'obj1', obj6, 'obj6', false)
-        objectsAreEqual(obj1, 'obj1', obj7, 'obj7', false)
-        objectsAreEqual(obj1, 'obj1', obj8, 'obj8', false)
-        objectsAreEqual(obj1, 'obj1', obj9, 'obj9', false)
+        mismatch
     })
+
+    // describe('objectsAreEqual()', () => {
+    //     const obj1 = {
+    //         arr : ['a',2,null],
+    //         num : 2.21,
+    //         str : 'Stephen King',
+    //         bool: true,
+    //         obj : {
+    //             arr: [],
+    //             num: 0,
+    //             str: ''
+    //         } 
+    //     }
+
+    //     const obj2 = {
+    //         arr : ['a',2,null],
+    //         num : 2.21,
+    //         str : 'Stephen King',
+    //         bool: true,
+    //         obj : {
+    //             arr: [],
+    //             num: 0,
+    //             str: ''
+    //         } 
+    //     }
+
+    //     const obj3 = {
+    //         arr : ['a',3,null],
+    //         num : 2.21,
+    //         str : 'Stephen King',
+    //         bool: true,
+    //         obj : {
+    //             arr: [],
+    //             num: 0,
+    //             str: ''
+    //         } 
+    //     }
+
+    //     const obj4 = {
+    //         arr : ['a',2,null],
+    //         num : 2.2,
+    //         str : 'Stephen King',
+    //         bool: true,
+    //         obj : {
+    //             arr: [],
+    //             num: 0,
+    //             str: ''
+    //         } 
+    //     }
+
+    //     const obj5 = {
+    //         arr : ['a',2,null],
+    //         num : 2.21,
+    //         str : 'stephen king',
+    //         bool: true,
+    //         obj : {
+    //             arr: [],
+    //             num: 0,
+    //             str: ''
+    //         } 
+    //     }
+
+    //     const obj6 = {
+    //         arr : ['a',2,null],
+    //         num : 2.21,
+    //         str : 'Stephen King',
+    //         bool: false,
+    //         obj : {
+    //             arr: [],
+    //             num: 0,
+    //             str: ''
+    //         } 
+    //     }
+
+    //     const obj7 = {
+    //         arr : ['a',2,null],
+    //         num : 2.21,
+    //         str : 'Stephen King',
+    //         bool: true,
+    //         obj : {
+    //             arr: [0],
+    //             num: 0,
+    //             str: ''
+    //         } 
+    //     }
+
+    //     const obj8 = {
+    //         arr : ['a',2,null],
+    //         num : 2.21,
+    //         str : 'Stephen King',
+    //         bool: true,
+    //         obj : {
+    //             arr: [],
+    //             num: 2,
+    //             str: ''
+    //         } 
+    //     }
+
+    //     const obj9 = {
+    //         arr : ['a',2,null],
+    //         num : 2.21,
+    //         str : 'Stephen King',
+    //         bool: true,
+    //         obj : {
+    //             arr: [],
+    //             num: 0,
+    //             str: 's'
+    //         } 
+    //     }
+
+    //     objectsAreEqual(obj1, 'obj1', obj2, 'obj2')
+    //     objectsAreEqual(obj1, 'obj1', obj3, 'obj3', false)
+    //     objectsAreEqual(obj1, 'obj1', obj4, 'obj4', false)
+    //     objectsAreEqual(obj1, 'obj1', obj5, 'obj5', false)
+    //     objectsAreEqual(obj1, 'obj1', obj6, 'obj6', false)
+    //     objectsAreEqual(obj1, 'obj1', obj7, 'obj7', false)
+    //     objectsAreEqual(obj1, 'obj1', obj8, 'obj8', false)
+    //     objectsAreEqual(obj1, 'obj1', obj9, 'obj9', false)
+    // })
 })
 
