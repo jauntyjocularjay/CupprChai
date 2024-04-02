@@ -4,3 +4,6 @@
 [submodule "extensions/SchemaJS"]
 	path = extensions/SchemaJS
 	url = https://github.com/GeorgeSchafer/SchemaJS.git
+[submodule "extensions/EnumJS"]
+	path = extensions/EnumJS
+	url = https://github.com/GeorgeSchafer/EnumJS.git
