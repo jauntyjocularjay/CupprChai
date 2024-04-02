@@ -3,9 +3,17 @@ import { expect } from 'chai'
 
 
 /*** @description Description variables, constants and functions ***/
-const throwError = 'throw an error:'
-
 let counter = 0
+
+function throwsAnError(bool=true){
+
+    if(bool){
+        return 'successfully threw an error:' 
+    } else{
+        return 'did NOT throw an error:'
+    }
+    
+}
 
 function getCounter(){
     counter++
@@ -64,25 +72,17 @@ function matches(bool){
 /**
  * @description Test functions
  */
-/** @todo write tests */
 function isTrue(subject, bool=true, description=null){
-    try {
-        nullCheck(subject)
-        description !== null
-            ? description = `${getCounter()} ${description}`
-            : description = `${getCounter()} ${subject} ${is(bool)} true`
+    nullCheck(subject)
+    description !== null
+        ? description = `${getCounter()} ${description}`
+        : description = `${getCounter()} ${subject} ${is(bool)} true`
 
-        it(description, () => {
-            bool
-                ? expect(subject).to.be.true
-                : expect(subject).to.be.false
-        })
-    } catch (error) {
-        description = `${getCounter()} ${subject} ${is(bool)} true`
-        it(description + throwError, () => {
-            expect(true).to.eql(false)
-        })
-    }
+    it(description, () => {
+        bool
+            ? expect(subject).to.be.true
+            : expect(subject).to.be.false
+    })
 }
 
 function valueMatch(subject, object=null, bool=true, description=null){
@@ -101,7 +101,7 @@ function valueMatch(subject, object=null, bool=true, description=null){
     } catch(error) {
         const description = `${getCounter()} '${subject}' ${matches(bool)} '${object}'`
 
-        it(description + throwError, () => {
+        it(description + throwsAnError, () => {
             expect(true).to.eql(false)
         })
 
@@ -281,7 +281,7 @@ function stringsEqual(subject, target, caseSensitive=true){
 }
 
 /** @todo write tests */
-function isNull(param, bool){
+function isNull(param, bool=true){
     const description = `${getCounter()} ${param} ${is(bool)} null`
 
     it(description, () => {
@@ -291,10 +291,10 @@ function isNull(param, bool){
     })
 }
 
-function throwsError(functionAlias, test, param=null, bool=true, error=Error){
-    const description = `${getCounter()} ${functionAlias} ${did(bool)} ${throwError} ${error.name}`
+function throwsError(subject, subjectAlias, param=null, bool=true, error=Error){
+    const description = `${getCounter()} ${subjectAlias}(${param}) ${throwsAnError(bool)} ${error.name}`
     const fn = () => {
-        test(param)
+        subject(param)
     }
 
     it(description,() => {
@@ -305,7 +305,7 @@ function throwsError(functionAlias, test, param=null, bool=true, error=Error){
 }
 
 function constructorThrowsError(nameStr, className, param=null, bool=true, error=Error){
-    const description = `${getCounter()} ${nameStr} constructor ${did(bool)} ${throwError} ${error.name}`
+    const description = `${getCounter()} ${nameStr} constructor ${throwsAnError(bool)} ${error.name}`
 
     const instance = () => {
         new className(param)
@@ -327,7 +327,7 @@ function nullCheck(value){
 }
 
 export {
-    throwError,
+    throwsAnError,
     did,
     does,
     have,

@@ -8,7 +8,7 @@ import {
     getCounter,
     valueMatch,
     objectsMatch,
-    throwsError,
+    throwsAnError,
     nullCheck
 } from '../Chai.mjs'
 import { 

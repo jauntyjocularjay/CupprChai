@@ -1,5 +1,5 @@
 import {
-    throwError,
+    throwsAnError,
     did,
     does,
     have,
