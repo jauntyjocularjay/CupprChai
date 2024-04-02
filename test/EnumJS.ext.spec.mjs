@@ -6,7 +6,7 @@ import {
     Enum,
     ExtEnum,
     InvalidArrayError
-} from '../extensions/SchemaJS/ENUMJS/ENUM.mjs'
+} from '../extensions/EnumJS/ENUM.mjs'
 
 describe('Enum', () => {
     describe('Constructor', () => {
