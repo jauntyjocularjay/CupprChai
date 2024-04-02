@@ -127,7 +127,7 @@ function objectsAreEquivalent(subject, subjectAlias, target, targetAlias){
 
 /** @todo write tests */
 function objectsAreEqual(subject, subjectAlias, target, targetAlias, bool=true){
-    const description = `${getCounter} ${subjectAlias} ${matches(bool)} ${targetAlias}`
+    const description = `${getCounter()} ${subjectAlias} ${matches(bool)} ${targetAlias}`
 
     it(description, () => {
         const result = objectsMatch(subject, target)
@@ -170,7 +170,7 @@ function mismatchingNulls(subject, target){
 function mismatchingObjects(subject, target){
     return typeof subject === 'object' &&
         typeof target === 'object' &&
-        !objectsEqual(value, target)
+        !objectsEqual(subject, target)
 }
 
 /** @todo tested implicitly by objectsAreEqual() */
