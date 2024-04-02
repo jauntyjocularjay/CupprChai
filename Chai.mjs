@@ -6,13 +6,11 @@ import { expect } from 'chai'
 let counter = 0
 
 function throwsAnError(bool=true){
-
     if(bool){
         return 'successfully threw an error:' 
     } else{
         return 'did NOT throw an error:'
     }
-    
 }
 
 function getCounter(){
@@ -69,9 +67,7 @@ function matches(bool){
 
 }
 
-/**
- * @description Test functions
- */
+/*** @description Test functions ***/
 function isTrue(subject, bool=true, description=null){
     nullCheck(subject)
     description !== null
@@ -280,7 +276,6 @@ function stringsEqual(subject, target, caseSensitive=true){
     return true
 }
 
-/** @todo write tests */
 function isNull(param, bool=true){
     const description = `${getCounter()} ${param} ${is(bool)} null`
 
@@ -292,6 +287,9 @@ function isNull(param, bool=true){
 }
 
 function throwsError(subject, subjectAlias, param=null, bool=true, error=Error){
+/** 
+ *  @debug If you run into problems with this, check the function you are 
+ *      testing to see if you are handling the error you are expecting.     */
     const description = `${getCounter()} ${subjectAlias}(${param}) ${throwsAnError(bool)} ${error.name}`
     const fn = () => {
         subject(param)
