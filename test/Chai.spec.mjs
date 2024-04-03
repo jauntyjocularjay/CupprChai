@@ -1,4 +1,10 @@
 import {
+    arraysEqual,
+    arraysMatch,
+    objectsMatch,
+    stringsMatch,
+    mismatchTests,
+
     throwsAnError,
     did,
     does,
@@ -9,11 +15,8 @@ import {
     getCounter,
     isTrue,
     valueMatch,
-    arraysMatch,
     objectsAreEquivalent,
     objectsAreEqual,
-    objectsMatch,
-    stringsMatch,
     isNull,
     throwsError,
     constructorThrowsError,
@@ -81,10 +84,28 @@ describe('ChaiFunctions.mjs', () => {
     })
 
     describe('helper functions for objectsAreEqual()', () => {
-        obj1 = { sub: null }
-        obj2 = { sub: null }
+        const arr1 = [1,2,3]
+        const arr2 = [1,2,3]
+        const arr3 = [5,4,8]
+        
+        const obj1 = { sub: null }
+        const obj2 = { sub: null }
 
-        mismatch
+        arraysMatch(arr1, 'arr1', arr2, 'arr2')
+        arraysMatch(arr1, 'arr1', arr2, 'arr2', true)
+        arraysMatch(arr1, 'arr1', arr3, 'arr3', false)
+        throwsError(arraysMatch, 'arraysMatch')
+
+        const str1 = 'right'
+        const str2 = 'right'
+        const str3 = 'left'
+
+        stringsMatch(str1, 'str1', str2, 'str2')
+        stringsMatch(str1, 'str1', str2, 'str2', true)
+        stringsMatch(str1, 'str1', str2, 'str2', false)
+        throwsError(stringsMatch, 'stringsMatch')
+
+        mismatchTests()
     })
 
     // describe('objectsAreEqual()', () => {
