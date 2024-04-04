@@ -1,4 +1,10 @@
 import {
+    arraysMatch,
+    objectsMatch,
+    stringsMatch,
+    arraysMismatchTests,
+    stringsMismatchTests,
+
     throwsAnError,
     did,
     does,
@@ -9,11 +15,8 @@ import {
     getCounter,
     isTrue,
     valueMatch,
-    arraysMatch,
     objectsAreEquivalent,
     objectsAreEqual,
-    objectsMatch,
-    stringsMatch,
     isNull,
     throwsError,
     constructorThrowsError,
@@ -69,7 +72,6 @@ describe('ChaiFunctions.mjs', () => {
         isTrue(true, true)
         isTrue(false, false, 'This statement is a lie.')
         isTrue(true, true, 'This statement is true.')
-        /*** @todo debug: failing despite doing what it should  ***/
         throwsError(isTrue, 'isTrue')
     })
 
@@ -79,6 +81,32 @@ describe('ChaiFunctions.mjs', () => {
         isNull(true, false)
         isNull(undefined, false)
         isNull(false, false)
+    })
+
+    describe('helper functions for objectsAreEqual()', () => {
+        const arr1 = [1,2,3]
+        const arr2 = [1,2,3]
+        const arr3 = [5,4,8]
+        
+        const obj1 = { sub: null }
+        const obj2 = { sub: null }
+
+        arraysMatch(arr1, 'arr1', arr2, 'arr2')
+        arraysMatch(arr1, 'arr1', arr2, 'arr2', true)
+        arraysMatch(arr1, 'arr1', arr3, 'arr3', false)
+        throwsError(arraysMatch, 'arraysMatch')
+
+        const str1 = 'right'
+        const str2 = 'right'
+        const str3 = 'left'
+
+        stringsMatch(str1, 'str1', str2, 'str2')
+        stringsMatch(str1, 'str1', str2, 'str2', true)
+        stringsMatch(str1, 'str1', str2, 'str2', false)
+        throwsError(stringsMatch, 'stringsMatch')
+
+        arraysMismatchTests()
+        stringsMismatchTests()
     })
 
     // describe('objectsAreEqual()', () => {
