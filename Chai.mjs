@@ -170,65 +170,18 @@ function objectsEqual(subject, target){
     const subjectKeys = Object.keys(subject)
     const targetKeys = Object.keys(target)
 
-    if(!arraysEqual(subjectKeys,targetKeys)){
+    if(!arraysAreEqual(subjectKeys,targetKeys)){
         return false
     }
 
     const subjectValues = Object.values(subject)
     const targetValues = Object.values(target)
 
-    if(!arraysEqual(subjectValues,targetValues)){
+    if(!arraysAreEqual(subjectValues,targetValues)){
         return false
     }
 
     return true
-}
-
-function mismatchTests(){
-
-    it(`${getCounter()} arraysMismatch recognizes mismatching arrays`, () => {
-        expect(arraysMismatch([2, 3], [2,2])).to.be.true
-    })
-
-    it(`${getCounter()} arraysMismatch recognizes matching arrays`, () => {
-        expect(arraysMismatch([2, 2], [2,2])).to.be.false
-    })
-
-    it(`${getCounter()} stringMismatch recognizes mismatching strings`, () => {
-        expect(stringsMismatch('this', 'that', 'that', 'that')).to.be.true
-    })
-
-    it(`${getCounter()} stringMismatch recognizes matching string`, () => {
-        expect(stringsMismatch('this', 'that', 'this', 'that')).to.be.false
-    })
-}
-
-/** @todo tested by mismatchTests() */
-function arraysMismatch(subject, target){
-    return typeof subject === 'array' &&
-        typeof target === 'array' &&
-        !arraysEqual(subject, target)
-}
-
-/** @todo tested by mismatchTests() */
-function stringsMismatch(subject, target){
-    return typeof subject === 'string' &&
-        typeof target === 'string' &&
-        !stringsEqual(subject, target)
-}
-
-/** @todo tested implicitly by objectsAreEqual() */
-function objectsMismatch(subject, target){
-/**
- * @function
- *      This is a testing class that is used in if-else statements for flow control.
- * @param {object} subject 
- * @param {object} target 
- * @returns {boolean}
- */
-    return typeof subject === 'object' &&
-        typeof target === 'object' &&
-        !objectsEqual(subject, target)
 }
 
 function arraysMatch(subject, subjectAlias, target, targetAlias, bool=true){
@@ -238,25 +191,52 @@ function arraysMatch(subject, subjectAlias, target, targetAlias, bool=true){
 
     it(description, () => {
         bool
-            ? expect(arraysEqual(subject, target)).to.be.true
-            : expect(arraysEqual(subject, target)).to.be.false
+            ? expect(arraysAreEqual(subject, target)).to.be.true
+            : expect(arraysAreEqual(subject, target)).to.be.false
     })
 }
 
-/*** tested implicitly by arrayMatch() ***/
-function arraysEqual(subject, target){
-    let passes = true
-    let i = 0
+function arraysMismatchTests(){
 
-    subject.forEach(element => {
-        if (element === target[i]){
-            i++
+    it(`${getCounter()} arraysMismatch recognizes mismatching non-array and array`, () => {
+        expect(arraysMismatch([2, 3], 3)).to.be.true
+    })
+
+    it(`${getCounter()} arraysMismatch recognizes mismatching array and non-array`, () => {
+        expect(arraysMismatch(2, [2,2])).to.be.true
+    })
+
+    it(`${getCounter()} arraysMismatch recognizes mismatching arrays`, () => {
+        expect(arraysMismatch([2, 3], [2,2])).to.be.true
+    })
+
+    it(`${getCounter()} arraysMismatch recognizes matching arrays`, () => {
+        expect(arraysMismatch([2, 2], [2,2])).to.be.false
+    })
+}
+
+/** @todo tested by arraysMistmatchTests() */
+function arraysMismatch(subject, target){
+    return !Array.isArray(subject) ||
+        !Array.isArray(target) ||
+        !arraysAreEqual(subject, target)
+}
+
+/*** tested implicitly by arrayMatch() ***/
+function arraysAreEqual(subjects, target){
+    let passes = true
+    let s = 0
+
+    subjects.forEach(subject => {
+        if (subject === target[s]){
+            s++
         } else {
             passes = false
-            return
+            // return false
         }
     })
     return passes
+    // return true
 }
 
 function stringsMatch(subject, subjectAlias, target, targetAlias, caseSensitive=true, bool=true){
@@ -274,25 +254,83 @@ function stringsMatch(subject, subjectAlias, target, targetAlias, caseSensitive=
     })
 }
 
+/*** @todo debug ***/
+function stringsMismatchTests(){
+
+    const alias = 'stringMismatch()'
+    let that = 'that'
+
+    it(`${getCounter()} ${alias} recognizes '${that}' ${does(false)} match 'those'`, () => {
+        expect(stringsMismatch(that, 'those')).to.be.true
+    })
+
+    it(`${getCounter()} ${alias} recognizes '${that}' ${does(false)} match 'tHAs' when ${alias + is(true)} case-sensitive`, () => {
+        expect(stringsMismatch(that, 'tHAs')).to.be.true
+    })
+
+    it(`${getCounter()} ${alias} recognizes '${that}' ${does(true)} match 'that'--`, () => {
+        expect(stringsMismatch(that, 'that')).to.be.false
+    })
+
+    it(`${getCounter()} ${alias} recognizes '${that}' ${does(true)} match 'tHAt' when ${alias + is(false)} case-sensitive`, () => {
+        expect(stringsMismatch(that, 'tHAt', false)).to.be.false
+    })
+}
+
+/** @todo tested by mismatchTests() */
+function stringsMismatch(subject, target, bool){
+    return !typeof subject === 'string' ||
+        !typeof target === 'string' ||
+        !stringsEqual(subject, target, bool)
+}
+
 /*** tested implicitly by stringsMatch() ***/
+// function stringsEqual(subject, target, caseSensitive=true){
+//     let passes = true
+//     if(!caseSensitive){
+//         subject = subject.toLowerCase()
+//         target = target.toLowerCase()
+//     }
+
+//     if(subject.length !== target.length){
+//         passes = false
+//     }
+
+//     for(let i = 0; i < subject.length; i++){
+//         if(subject.charAt(i) !== target.charAt(i)){
+//             passes = false
+//         }
+//     }
+
+//     return passes
+// }
+
+// function stringsEqual(subject, target, caseSensitive=true){
+//     return true
+// }
+
+// function stringsEqual(subject, target, caseSensitive=true){
 function stringsEqual(subject, target, caseSensitive=true){
-    let passes = true
     if(!caseSensitive){
         subject = subject.toLowerCase()
         target = target.toLowerCase()
     }
 
-    if(subject.length !== target.length){
-        passes = false
-    }
+    return subject === target
+}
 
-    for(let i = 0; i < subject.length; i++){
-        if(subject.charAt(i) != target.charAt(i)){
-            passes = false
-        }
-    }
-
-    return passes
+/** @todo tested implicitly by objectsAreEqual() */
+function objectsMismatch(subject, target){
+/**
+ * @function
+ *      This is a testing class that is used in if-else statements for flow control.
+ * @param {object} subject 
+ * @param {object} target 
+ * @returns {boolean}
+ */
+    return typeof subject === 'object' &&
+        typeof target === 'object' &&
+        !objectsEqual(subject, target)
 }
 
 function isNull(param, bool=true){
@@ -345,11 +383,12 @@ function nullCheck(value){
 
 export {
     // for testing only
-    arraysEqual,
+    arraysAreEqual,
     arraysMatch,
+    arraysMismatchTests,
     objectsMatch,
     stringsMatch,
-    mismatchTests,
+    stringsMismatchTests,
 
     // for use
     throwsAnError,

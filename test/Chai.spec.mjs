@@ -1,9 +1,9 @@
 import {
-    arraysEqual,
     arraysMatch,
     objectsMatch,
     stringsMatch,
-    mismatchTests,
+    arraysMismatchTests,
+    stringsMismatchTests,
 
     throwsAnError,
     did,
@@ -105,7 +105,8 @@ describe('ChaiFunctions.mjs', () => {
         stringsMatch(str1, 'str1', str2, 'str2', false)
         throwsError(stringsMatch, 'stringsMatch')
 
-        mismatchTests()
+        arraysMismatchTests()
+        stringsMismatchTests()
     })
 
     // describe('objectsAreEqual()', () => {
