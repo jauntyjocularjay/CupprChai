@@ -104,7 +104,7 @@ function valueMatch(subject, object=null, bool=true, description=null){
     }
 }
 
-/** @todo write tests */
+/*** @todo write tests ***/
 function objectsAreEquivalent(subject, subjectAlias, target, targetAlias){
     const description = `${getCounter()} ${subjectAlias} matches ${targetAlias} properties`
 
@@ -125,7 +125,7 @@ function objectsAreEquivalent(subject, subjectAlias, target, targetAlias){
     })
 }
 
-/** @todo write tests */
+/*** @todo write tests ***/
 function objectsAreEqual(subject, subjectAlias, target, targetAlias, bool=true){
     const description = `${getCounter()} ${subjectAlias} ${matches(bool)} ${targetAlias}`
 
@@ -138,8 +138,12 @@ function objectsAreEqual(subject, subjectAlias, target, targetAlias, bool=true){
     })
 }
 
-/** @todo tested implicitly by objectsAreEqual() */
+/*** @todo write tests ***/
 function objectsMatch(subject, target){
+/*** @test implicitly by objectsAreEqual() ***/
+
+    const passes = true
+
     for(const [key, value] of Object.entries(subject)){
         if( (typeof value !== typeof target[key]) ||
             
@@ -154,34 +158,56 @@ function objectsMatch(subject, target){
 
             (value !== target[key])) {
 
-            return false
+            passes = false
+            return
         }
     }
 
-    return true
+    return passes
 }
 
-/** @todo tested implicitly by objectsAreEqual() */
+/*** @helper function ***/
+function objectsMismatch(subject, target){
+/*** @tested implicitly by arrayMatch() ***/
+/**
+ * @function
+ *      This is a testing class that is used in if-else statements for flow control.
+ * @param {object} subject 
+ * @param {object} target 
+ * @returns {boolean}
+ ***/
+/*** @todo tested implicitly by objectsAreEqual() ***/
+return typeof subject === 'object' &&
+        typeof target === 'object' &&
+        !objectsEqual(subject, target)
+}
+
+/*** @todo write tests ***/
+/*** @helper function ***/
 function objectsEqual(subject, target){
+/*** @test implicitly by objectsAreEqual() ***/
     if(subject !== 'object' || typeof target !== 'object'  ){
         throw InvalidInputError('Your subject, target, or both are not objects.')
     }
 
     const subjectKeys = Object.keys(subject)
     const targetKeys = Object.keys(target)
+    const passes = true
 
     if(!arraysAreEqual(subjectKeys,targetKeys)){
-        return false
+        passes = false
+        return
     }
 
     const subjectValues = Object.values(subject)
     const targetValues = Object.values(target)
 
     if(!arraysAreEqual(subjectValues,targetValues)){
-        return false
+        passes = false
+        return
     }
 
-    return true
+    return passes
 }
 
 function arraysMatch(subject, subjectAlias, target, targetAlias, bool=true){
@@ -196,6 +222,7 @@ function arraysMatch(subject, subjectAlias, target, targetAlias, bool=true){
     })
 }
 
+/*** @tests exported to spec ***/
 function arraysMismatchTests(){
 
     it(`${getCounter()} arraysMismatch recognizes mismatching non-array and array`, () => {
@@ -215,15 +242,17 @@ function arraysMismatchTests(){
     })
 }
 
-/** @todo tested by arraysMistmatchTests() */
+/*** @helper function ***/
 function arraysMismatch(subject, target){
-    return !Array.isArray(subject) ||
+/*** @tested by arraysMistmatchTests() ***/
+return !Array.isArray(subject) ||
         !Array.isArray(target) ||
         !arraysAreEqual(subject, target)
 }
 
-/*** tested implicitly by arrayMatch() ***/
+/*** @helper function ***/
 function arraysAreEqual(subjects, target){
+/*** @tested implicitly by arrayMatch() ***/
     let passes = true
     let s = 0
 
@@ -254,7 +283,6 @@ function stringsMatch(subject, subjectAlias, target, targetAlias, caseSensitive=
     })
 }
 
-/*** @todo debug ***/
 function stringsMismatchTests(){
 
     const alias = 'stringMismatch()'
@@ -277,60 +305,23 @@ function stringsMismatchTests(){
     })
 }
 
-/** @todo tested by mismatchTests() */
+/*** @helper function ***/
 function stringsMismatch(subject, target, bool){
+/*** @tested implicitly by arrayMatch() ***/
     return !typeof subject === 'string' ||
         !typeof target === 'string' ||
         !stringsEqual(subject, target, bool)
 }
 
-/*** tested implicitly by stringsMatch() ***/
-// function stringsEqual(subject, target, caseSensitive=true){
-//     let passes = true
-//     if(!caseSensitive){
-//         subject = subject.toLowerCase()
-//         target = target.toLowerCase()
-//     }
-
-//     if(subject.length !== target.length){
-//         passes = false
-//     }
-
-//     for(let i = 0; i < subject.length; i++){
-//         if(subject.charAt(i) !== target.charAt(i)){
-//             passes = false
-//         }
-//     }
-
-//     return passes
-// }
-
-// function stringsEqual(subject, target, caseSensitive=true){
-//     return true
-// }
-
-// function stringsEqual(subject, target, caseSensitive=true){
+/*** @helper function ***/
 function stringsEqual(subject, target, caseSensitive=true){
+/*** @tested implicitly by arrayMatch() ***/
     if(!caseSensitive){
         subject = subject.toLowerCase()
         target = target.toLowerCase()
     }
 
     return subject === target
-}
-
-/** @todo tested implicitly by objectsAreEqual() */
-function objectsMismatch(subject, target){
-/**
- * @function
- *      This is a testing class that is used in if-else statements for flow control.
- * @param {object} subject 
- * @param {object} target 
- * @returns {boolean}
- */
-    return typeof subject === 'object' &&
-        typeof target === 'object' &&
-        !objectsEqual(subject, target)
 }
 
 function isNull(param, bool=true){
@@ -346,7 +337,7 @@ function isNull(param, bool=true){
 function throwsError(subject, subjectAlias, param=null, bool=true, error=Error){
 /** 
  *  @debug If you run into problems with this, check the function you are 
- *      testing to see if you are handling the error you are expecting.     */
+ *      testing to see if you are handling the error you are expecting.     ***/
     const description = `${getCounter()} ${subjectAlias}(${param}) ${throwsAnError(bool)} ${error.name}`
     const fn = () => {
         subject(param)
