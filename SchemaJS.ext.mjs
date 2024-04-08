@@ -7,7 +7,7 @@ import {
     is,
     matches,
     getCounter,
-    valueMatch,
+    expectValuesToMatch,
     objectsMatch,
     throwsError,
     nullCheck
@@ -29,13 +29,13 @@ function SchemaTypeValue(SchemaType, obj, bool=true){
     }
     const description = `SchemaType ${is(bool)} {${result.key}: '${result.value}'}`
 
-    valueMatch(SchemaType.valueOf(), obj, bool, description)
+    expectValuesToMatch(SchemaType.valueOf(), obj, bool, description)
 }
 
 function SchemaTypeProperty(schema, alias, target, bool=true){
     const description = `${alias} Schema ${has(bool)} {type: '${target.type}'}`
 
-    valueMatch(schema.type, target.valueOf().type, bool, description)
+    expectValuesToMatch(schema.type, target.valueOf().type, bool, description)
 }
 
 /**
