@@ -6,9 +6,10 @@ import {
     is,
     matches,
     getCounter,
-    valueMatch,
+    expectValuesToMatch,
     objectsMatch,
     throwsAnError,
+    expectConstructorToThrowError,
     nullCheck
 } from '../Chai.mjs'
 import { 

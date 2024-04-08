@@ -64,11 +64,16 @@ function matches(bool){
     } else {
         return 'does not match'
     }
+}
 
+function recognizes(bool){
+    bool
+        ? 'recognizes'
+        : 'does not recognize'
 }
 
 /*** @section Test functions ***/
-function isTrue(subject, bool=true, description=null){
+function expectToBeTrue(subject, bool=true, description=null){
     nullCheck(subject)
     description !== null
         ? description = `${getCounter()} ${description}`
@@ -81,7 +86,7 @@ function isTrue(subject, bool=true, description=null){
     })
 }
 
-function valueMatch(subject, object=null, bool=true, description=null){
+function expectValuesToMatch(subject, object=null, bool=true, description=null){
     try {
         nullCheck(subject)
 
@@ -126,7 +131,7 @@ function objectsAreEquivalent(subject, subjectAlias, target, targetAlias){
 }
 
 /*** @todo write tests ***/
-function objectsAreEqual(subject, subjectAlias, target, targetAlias, bool=true){
+function expectObjectsAreEqual(subject, subjectAlias, target, targetAlias, bool=true){
     const description = `${getCounter()} ${subjectAlias} ${matches(bool)} ${targetAlias}`
 
     it(description, () => {
@@ -139,22 +144,30 @@ function objectsAreEqual(subject, subjectAlias, target, targetAlias, bool=true){
 }
 
 /*** @todo write tests ***/
-function objectsMatch(subject, target){
+function objectsMatch(subject, subjectAlias, target, targetAlias){
 /*** @test implicitly by objectsAreEqual() ***/
 
-    const passes = true
+    const objectArray = [{},{}]
+    objectArray[0][subjectAlias] = subject
+    objectArray[1][targetAlias] = target
+
+    if(typeof subject !== 'object' || typeof target !== 'object'){
+        console.log('typeof subject:', typeof subject, 'typeof target:', typeof target)
+        throw new InvalidInputError('objectsMatch', 'object', objectArray)
+    }
+
+    let passes = true
 
     for(const [key, value] of Object.entries(subject)){
         if( (typeof value !== typeof target[key]) ||
             
-            (isNull(value) && isNull(target[key])) ||
+            // (value === null && target[key] === null) ||
 
             (objectsMismatch(value, target[key])) ||
 
             (arraysMismatch(value, target[key])) ||
 
             (stringsMismatch(value, target[key])) ||
-
 
             (value !== target[key])) {
 
@@ -166,7 +179,6 @@ function objectsMatch(subject, target){
     return passes
 }
 
-/*** @helper function ***/
 function objectsMismatch(subject, target){
 /*** @tested implicitly by arrayMatch() ***/
 /**
@@ -183,16 +195,15 @@ return typeof subject === 'object' &&
 }
 
 /*** @todo write tests ***/
-/*** @helper function ***/
 function objectsEqual(subject, target){
 /*** @test implicitly by objectsAreEqual() ***/
     if(subject !== 'object' || typeof target !== 'object'  ){
-        throw InvalidInputError('Your subject, target, or both are not objects.')
+        return false
     }
 
     const subjectKeys = Object.keys(subject)
     const targetKeys = Object.keys(target)
-    const passes = true
+    let passes = true
 
     if(!arraysAreEqual(subjectKeys,targetKeys)){
         passes = false
@@ -240,6 +251,19 @@ function arraysMismatchTests(){
     it(`${getCounter()} arraysMismatch recognizes matching arrays`, () => {
         expect(arraysMismatch([2, 2], [2,2])).to.be.false
     })
+
+
+}
+
+function expectObjectsMismatch(subject, subjectAlias, target, targetAlias, bool=true){
+    const objectArray = [{}, {}]
+    objectArray[subjectAlias] = subject
+    objectArray[targetAlias] = target
+    it(`${getCounter()} objectsMismatch ${recognizes(bool)} mismatching objects`, () => {
+        if(typeof subject !== 'object' || typeof target !== 'object'){
+            throw new InvalidInputError('expectObjectsMismatch', 'object', objectArray) //(subject, target, 'object')
+        }
+    })
 }
 
 /*** @helper function ***/
@@ -269,7 +293,7 @@ function arraysAreEqual(subjects, target){
 }
 
 function stringsMatch(subject, subjectAlias, target, targetAlias, caseSensitive=true, bool=true){
-    if(typeof subject !== 'string' || typeof target !== 'string') {throw new InvalidInputError('Your subject, target, or both are not strings.')}
+    if(typeof subject !== 'string' || typeof target !== 'string') {throw new InvalidInputError('stringsMatch', 'string', [{subjectAlias: subject}, {targetAlias: target}])} //`StringsMatch: your subject: ${subject}, target: ${target}, or both are not strings`)}
 
     const description = `${getCounter()} string: ${subjectAlias} ${matches(bool)} string (case sensitive by default): ${targetAlias}`
 
@@ -324,7 +348,7 @@ function stringsEqual(subject, target, caseSensitive=true){
     return subject === target
 }
 
-function isNull(param, bool=true){
+function expectToBeNull(param, bool=true){
     const description = `${getCounter()} ${param} ${is(bool)} null`
 
     it(description, () => {
@@ -350,7 +374,7 @@ function throwsError(subject, subjectAlias, param=null, bool=true, error=Error){
     })
 }
 
-function constructorThrowsError(nameStr, className, param=null, bool=true, error=Error){
+function expectConstructorToThrowError(nameStr, className, param=null, bool=true, error=Error){
     const description = `${getCounter()} ${nameStr} constructor ${throwsAnError(bool)} ${error.name}`
 
     const instance = () => {
@@ -372,6 +396,19 @@ function nullCheck(value){
     }
 }
 
+class InvalidInputError extends Error {
+    constructor(methodAlias, type, subjectArray=[{subjectAlias: subject}, {targetAlias: target}]){
+        let message = `${methodAlias}: your `
+
+        for(const [key, value] of Object.entries(subjectArray)){
+            message += `${key}: ${typeof value} `
+        }
+
+        message += `are not "${type}"`
+        super('InvalidInputError: ' + message)
+    }
+}
+
 export {
     // for testing only
     arraysAreEqual,
@@ -390,12 +427,12 @@ export {
     is,
     matches,
     getCounter,
-    isTrue,
-    valueMatch,
+    expectToBeTrue,
+    expectValuesToMatch,
     objectsAreEquivalent,
-    objectsAreEqual,
-    isNull,
+    expectObjectsAreEqual,
+    expectToBeNull,
     throwsError,
-    constructorThrowsError,
+    expectConstructorToThrowError,
     nullCheck,
 }
