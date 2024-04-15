@@ -135,7 +135,7 @@ function expectObjectsAreEqual(subject, subjectAlias, target, targetAlias, bool=
     const description = `${getCounter()} ${subjectAlias} ${matches(bool)} ${targetAlias}`
 
     it(description, () => {
-        const result = objectsMatch(subject, target)
+        const result = objectsMatch(subject, subjectAlias, target, targetAlias)
 
         bool
             ? expect(result).to.be.true
@@ -143,40 +143,20 @@ function expectObjectsAreEqual(subject, subjectAlias, target, targetAlias, bool=
     })
 }
 
-/*** @todo write tests ***/
 function objectsMatch(subject, subjectAlias, target, targetAlias){
 /*** @test implicitly by objectsAreEqual() ***/
 
-    const objectArray = [{},{}]
-    objectArray[0][subjectAlias] = subject
-    objectArray[1][targetAlias] = target
+    const subjectArray = [{},{}]
+    subjectArray[0][subjectAlias] = subject
+    subjectArray[1][targetAlias] = target
 
-    if(typeof subject !== 'object' || typeof target !== 'object'){
-        console.log('typeof subject:', typeof subject, 'typeof target:', typeof target)
-        throw new InvalidInputError('objectsMatch', 'object', objectArray)
+    if(true){// if(typeof subject !== 'object' || typeof target !== 'object'){
+        throw new InvalidInputError('objectsMatch', 'object', subjectArray)
     }
 
-    let passes = true
 
-    for(const [key, value] of Object.entries(subject)){
-        if( (typeof value !== typeof target[key]) ||
-            
-            // (value === null && target[key] === null) ||
 
-            (objectsMismatch(value, target[key])) ||
 
-            (arraysMismatch(value, target[key])) ||
-
-            (stringsMismatch(value, target[key])) ||
-
-            (value !== target[key])) {
-
-            passes = false
-            return
-        }
-    }
-
-    return passes
 }
 
 function objectsMismatch(subject, target){
@@ -400,9 +380,15 @@ class InvalidInputError extends Error {
     constructor(methodAlias, type, subjectArray=[{subjectAlias: subject}, {targetAlias: target}]){
         let message = `${methodAlias}: your `
 
-        for(const [key, value] of Object.entries(subjectArray)){
-            message += `${key}: ${typeof value} `
-        }
+        subjectArray.forEach(obj => {
+            for(const [key, value] of Object.entries(obj)){
+                message += `${key}: ${typeof value} `
+            }
+        })
+
+        // for(const [key, value] of Object.entries(subjectArray)){
+        //     message += `${key}: ${typeof value} `
+        // }
 
         message += `are not "${type}"`
         super('InvalidInputError: ' + message)
