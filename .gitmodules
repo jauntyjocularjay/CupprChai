@@ -1,6 +1,6 @@
 [submodule "extensions/SchemaJS"]
 	path = extensions/SchemaJS
 	url = https://github.com/jauntyjocularjay/SchemaJS.git
-[submodule "kg"]
-	path = kg
+[submodule "sh"]
+	path = sh
 	url = https://www.github.com/jauntyjocularjay/KwikGit
