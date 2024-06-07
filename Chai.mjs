@@ -147,7 +147,7 @@ function expectArrayToInclude(array, element, bool=true){
     })
 }
 
-function expectArraytoIncludeArrayContents(array1=[], array2=[], bool=true){
+function expectArraytoIncludeArrayContents(array1Alias, array1=[], array2Alias, array2=[], bool=true){
 /**
  * @todo write tests
  * @param {*} array1 
@@ -157,7 +157,7 @@ function expectArraytoIncludeArrayContents(array1=[], array2=[], bool=true){
  */
     if(!Array.isArray(array1) || !Array.isArray(array2)){ throw new InvalidArrayError() }
 
-    const description = ` ${array1} ${contains(bool)} all of: ${array2}`
+    const description = ` ${array1Alias} ${contains(bool)} ALL of: ${array2Alias}`
     it(getCounter() + description, () => {
 
         let result = true
