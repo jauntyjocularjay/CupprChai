@@ -1,0 +1,6 @@
+#!/bin/bash
+
+rm -r test
+rm ChaiFunctions.code-workspace
+
+echo 'delete extensions if you are not using them'
