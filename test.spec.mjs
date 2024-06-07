@@ -15,7 +15,7 @@ import {
     throwsError,
     expectConstructorToThrowError,
     nullCheck,
-} from 'Chai.mjs'
+} from './Chai.mjs'
 import { expect } from 'chai'
 
 
