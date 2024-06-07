@@ -110,7 +110,7 @@ function expectValuesToMatch(subject, object=null, bool=true, description=null){
 }
 
 /*** @todo write tests ***/
-function objectsAreEquivalent(subject, subjectAlias, target, targetAlias){
+function objectsAreEquivalent(subjectAlias, subject, targetAlias,  target){
     const description = `${getCounter()} ${subjectAlias} matches ${targetAlias} properties`
 
     it(description,() => {
@@ -131,11 +131,11 @@ function objectsAreEquivalent(subject, subjectAlias, target, targetAlias){
 }
 
 /*** @todo write tests ***/
-function expectObjectsAreEqual(subject, subjectAlias, target, targetAlias, bool=true){
+function expectObjectsAreEqual(subjectAlias, subject, targetAlias, target, bool=true){
     const description = `${getCounter()} ${subjectAlias} ${matches(bool)} ${targetAlias}`
 
     it(description, () => {
-        const result = objectsMatch(subject, subjectAlias, target, targetAlias)
+        const result = objectsEqual(subject, target)
 
         bool
             ? expect(result).to.be.true
@@ -143,21 +143,18 @@ function expectObjectsAreEqual(subject, subjectAlias, target, targetAlias, bool=
     })
 }
 
-function objectsMatch(subject, subjectAlias, target, targetAlias){
-/*** @test implicitly by objectsAreEqual() ***/
+// function objectsMatch(subjectAlias, subject, targetAlias, target){
+// /*** @test implicitly by objectsAreEqual() ***/
 
-    const subjectArray = [{},{}]
-    subjectArray[0][subjectAlias] = subject
-    subjectArray[1][targetAlias] = target
+//     const subjectArray = [{},{}]
+//     subjectArray[0][subjectAlias] = subject
+//     subjectArray[1][targetAlias] = target
 
-    if(true){// if(typeof subject !== 'object' || typeof target !== 'object'){
-        throw new InvalidInputError('objectsMatch', 'object', subjectArray)
-    }
+//     if(typeof subject !== 'object' || typeof target !== 'object'){
+//         throw new InvalidInputError('objectsMatch', 'object', subjectArray)
+//     }
 
-
-
-
-}
+// }
 
 function objectsMismatch(subject, target){
 /*** @tested implicitly by arrayMatch() ***/
@@ -177,31 +174,29 @@ return typeof subject === 'object' &&
 /*** @todo write tests ***/
 function objectsEqual(subject, target){
 /*** @test implicitly by objectsAreEqual() ***/
-    if(subject !== 'object' || typeof target !== 'object'  ){
+    if(typeof subject !== 'object' || typeof target !== 'object'  ){
         return false
     }
+    let result = true
 
-    const subjectKeys = Object.keys(subject)
-    const targetKeys = Object.keys(target)
-    let passes = true
+    let i = 0
+    const subjectEntries = Object.entries(subject)
+    const targetEntries = Object.entries(target)
 
-    if(!arraysAreEqual(subjectKeys,targetKeys)){
-        passes = false
-        return
-    }
-
-    const subjectValues = Object.values(subject)
-    const targetValues = Object.values(target)
-
-    if(!arraysAreEqual(subjectValues,targetValues)){
-        passes = false
-        return
-    }
-
-    return passes
+    subjectEntries.forEach(entry => {
+        let j = 0
+        entry.forEach(value => {
+            if(value !== targetEntries[i][j]) {
+                result = false
+            }
+            j++
+        })
+        i++
+    })
+    return result
 }
 
-function arraysMatch(subject, subjectAlias, target, targetAlias, bool=true){
+function arraysMatch(subjectAlias, subject, targetAlias, target, bool=true){
     if(!Array.isArray(subject) || !Array.isArray(target)) { throw new InvalidArrayError('Your subject, target, or both are not arrays.')}
 
     const description = `${getCounter()} array ${subjectAlias} ${matches(bool)} ${targetAlias}`
@@ -235,7 +230,7 @@ function arraysMismatchTests(){
 
 }
 
-function expectObjectsMismatch(subject, subjectAlias, target, targetAlias, bool=true){
+function expectObjectsMismatch(subjectAlias, subject, targetAlias, target, bool=true){
     const objectArray = [{}, {}]
     objectArray[subjectAlias] = subject
     objectArray[targetAlias] = target
@@ -272,7 +267,7 @@ function arraysAreEqual(subjects, target){
     // return true
 }
 
-function stringsMatch(subject, subjectAlias, target, targetAlias, caseSensitive=true, bool=true){
+function stringsMatch(subjectAlias, subject, targetAlias, target, caseSensitive=true, bool=true){
     if(typeof subject !== 'string' || typeof target !== 'string') {throw new InvalidInputError('stringsMatch', 'string', [{subjectAlias: subject}, {targetAlias: target}])} //`StringsMatch: your subject: ${subject}, target: ${target}, or both are not strings`)}
 
     const description = `${getCounter()} string: ${subjectAlias} ${matches(bool)} string (case sensitive by default): ${targetAlias}`
@@ -338,7 +333,7 @@ function expectToBeNull(param, bool=true){
     })
 }
 
-function throwsError(subject, subjectAlias, param=null, bool=true, error=Error){
+function throwsError(subjectAlias, subject, param=null, bool=true, error=Error){
 /** 
  *  @debug If you run into problems with this, check the function you are 
  *      testing to see if you are handling the error you are expecting.     ***/
@@ -400,7 +395,7 @@ export {
     arraysAreEqual,
     arraysMatch,
     arraysMismatchTests,
-    objectsMatch,
+    // objectsMatch,
     stringsMatch,
     stringsMismatchTests,
 
