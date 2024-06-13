@@ -3,4 +3,8 @@ sh/
 
 .gitmodules
 
+# test/
+# test.spec.cjs
+# test.spec.mjs
+
 
