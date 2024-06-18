@@ -240,7 +240,7 @@ function expectStringToInclude(subjectAlias=null, subject, targetAlias=null, tar
     subject = subject.trim()
     target = target.trim()
 
-    const description = `${getCounter} '${subjectAlias!==null ? subjectAlias : subject}' contains '${targetAlias!==null ? targetAlias : target}'`
+    const description = `${getCounter()} '${subjectAlias!==null ? subjectAlias : subject}' contains '${targetAlias!==null ? targetAlias : target}'`
     it(description, () => {
         bool
             ? expect(subject.includes(target)).to.be.true
