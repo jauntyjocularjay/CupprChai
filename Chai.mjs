@@ -230,11 +230,9 @@ function arraysAreEqual(subjects, target){
             s++
         } else {
             passes = false
-            // return false
         }
     })
     return passes
-    // return true
 }
 
 /** @todo test this */
