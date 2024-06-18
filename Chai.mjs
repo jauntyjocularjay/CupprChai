@@ -237,6 +237,19 @@ function arraysAreEqual(subjects, target){
     // return true
 }
 
+/** @todo test this */
+function expectStringToInclude(subject, target, bool=true){
+    subject = subject.trim()
+    target = target.trim()
+
+    const description = `${getCounter} '${subject}' contains '${target}'`
+    it(description, () => {
+        bool
+            ? expect(subject.includes(target)).to.be.true
+            : expect(subject.includes(target)).to.be.true
+    })
+}
+
 /**
  * @section Strings
  */
@@ -482,6 +495,7 @@ export {
     expectArrayToInclude,
     expectArraytoIncludeArrayContents,
     objectsAreEquivalent,
+    expectStringToInclude,
     expectObjectsAreEqual,
     expectToBeNull,
     throwsError,
