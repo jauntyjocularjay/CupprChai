@@ -238,11 +238,11 @@ function arraysAreEqual(subjects, target){
 }
 
 /** @todo test this */
-function expectStringToInclude(subject, target, bool=true){
+function expectStringToInclude(subjectAlias=null, subject, targetAlias=null, target, bool=true){
     subject = subject.trim()
     target = target.trim()
 
-    const description = `${getCounter} '${subject}' contains '${target}'`
+    const description = `${getCounter} '${subjectAlias!==null ? subjectAlias : subject}' contains '${targetAlias!==null ? targetAlias : target}'`
     it(description, () => {
         bool
             ? expect(subject.includes(target)).to.be.true
