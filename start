@@ -1,7 +1,14 @@
 #!/bin/bash
 
+mkdir ../test
+
+mv test.spec.cjs ../test
+mv test.spec.mjs ../test
+
 rm -r test
 rm ChaiFunctions.code-workspace
 rm start
 
-echo 'delete extensions if you are not using them'
+echo '1. delete extensions if you are not using them'
+echo '2. un-comment the desired statements in .gitignore'
+echo '3. run `npm install mochai chai`'

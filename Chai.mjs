@@ -2,7 +2,9 @@ import { expect } from 'chai'
 
 
 
-/*** @description Description variables, constants and functions ***/
+/**
+ * @description Description variables, constants and functions 
+ */
 let counter = 0
 
 function throwsAnError(bool=true){
@@ -16,6 +18,14 @@ function throwsAnError(bool=true){
 function getCounter(){
     counter++
     return `Test ${counter} -`
+}
+
+function contains(bool=true){
+    if(bool){
+        return 'contains'
+    } else {
+        return 'does NOT contain'
+    }
 }
 
 function did(bool=true){
@@ -72,20 +82,12 @@ function recognizes(bool){
         : 'does not recognize'
 }
 
-/*** @section Test functions ***/
-function expectToBeTrue(subject, bool=true, description=null){
-    nullCheck(subject)
-    description !== null
-        ? description = `${getCounter()} ${description}`
-        : description = `${getCounter()} ${subject} ${is(bool)} true`
-
-    it(description, () => {
-        bool
-            ? expect(subject).to.be.true
-            : expect(subject).to.be.false
-    })
-}
-
+/** 
+ * @section Test functions 
+ */
+/**
+ * @section Value matching
+ */
 function expectValuesToMatch(subject, object=null, bool=true, description=null){
     try {
         nullCheck(subject)
@@ -109,97 +111,76 @@ function expectValuesToMatch(subject, object=null, bool=true, description=null){
     }
 }
 
-/*** @todo write tests ***/
-function objectsAreEquivalent(subjectAlias, subject, targetAlias,  target){
-    const description = `${getCounter()} ${subjectAlias} matches ${targetAlias} properties`
-
-    it(description,() => {
-        const subjectKeys = Object.keys(subject)
-        const targetKeys = Object.keys(target)
-        const subjectValues = Object.values(subject)
-        const targetValues = Object.values(target)
-
-        expect(subjectKeys.length).to.eql(targetKeys.length)
-        expect(subjectValues.length).to.eql(subjectValues.length)
-
-        let i = 0
-        subjectValues.forEach(subjectValue => {
-            expect(targetValues[i]).to.eql(subjectValue)
-            i++
-        })
-    })
-}
-
-/*** @todo write tests ***/
-function expectObjectsAreEqual(subjectAlias, subject, targetAlias, target, bool=true){
-    const description = `${getCounter()} ${subjectAlias} ${matches(bool)} ${targetAlias}`
+/**
+ * @section Boolean
+ */
+function expectToBeTrue(subject, bool=true, description=null){
+    nullCheck(subject)
+    description !== null
+        ? description = `${getCounter()} ${description}`
+        : description = `${getCounter()} ${subject} ${is(bool)} true`
 
     it(description, () => {
-        const result = objectsEqual(subject, target)
-
         bool
-            ? expect(result).to.be.true
-            : expect(result).to.be.false
+            ? expect(subject).to.be.true
+            : expect(subject).to.be.false
     })
 }
 
-// function objectsMatch(subjectAlias, subject, targetAlias, target){
-// /*** @test implicitly by objectsAreEqual() ***/
 
-//     const subjectArray = [{},{}]
-//     subjectArray[0][subjectAlias] = subject
-//     subjectArray[1][targetAlias] = target
-
-//     if(typeof subject !== 'object' || typeof target !== 'object'){
-//         throw new InvalidInputError('objectsMatch', 'object', subjectArray)
-//     }
-
-// }
-
-function objectsMismatch(subject, target){
-/*** @tested implicitly by arrayMatch() ***/
 /**
- * @function
- *      This is a testing class that is used in if-else statements for flow control.
- * @param {object} subject 
- * @param {object} target 
- * @returns {boolean}
- ***/
-/*** @todo tested implicitly by objectsAreEqual() ***/
-return typeof subject === 'object' &&
-        typeof target === 'object' &&
-        !objectsEqual(subject, target)
-}
-
-/*** @todo write tests ***/
-function objectsEqual(subject, target){
-/*** @test implicitly by objectsAreEqual() ***/
-    if(typeof subject !== 'object' || typeof target !== 'object'  ){
-        return false
-    }
-    let result = true
-
-    let i = 0
-    const subjectEntries = Object.entries(subject)
-    const targetEntries = Object.entries(target)
-
-    subjectEntries.forEach(entry => {
-        let j = 0
-        entry.forEach(value => {
-            if(value !== targetEntries[i][j]) {
-                result = false
-            }
-            j++
-        })
-        i++
+ * @section Arrays
+ */
+function expectArrayToInclude(array, element, bool=true){
+/**
+ * @param {*} array1 
+ * @param {*} array2 
+ * @param {*} bool 
+ * @returns 
+ */
+    const description = `${getCounter()} Array ${has(bool)} ${element} as an element:`
+    
+    it(description, () => {
+        bool
+            ? expect(array.includes(element)).to.be.true
+            : expect(array.includes(element)).to.be.false
     })
-    return result
 }
 
-function arraysMatch(subjectAlias, subject, targetAlias, target, bool=true){
-    if(!Array.isArray(subject) || !Array.isArray(target)) { throw new InvalidArrayError('Your subject, target, or both are not arrays.')}
+function expectArraytoIncludeArrayContents(array1Alias, array1=[], array2Alias, array2=[], bool=true){
+/**
+ * @todo write tests
+ * @param {*} array1 
+ * @param {*} array2 
+ * @param {*} bool 
+ * @returns 
+ */
+    if(!Array.isArray(array1) || !Array.isArray(array2)){ throw new InvalidArrayError() }
 
-    const description = `${getCounter()} array ${subjectAlias} ${matches(bool)} ${targetAlias}`
+    const description = ` ${array1Alias} ${contains(bool)} ALL of: ${array2Alias}`
+    it(getCounter() + description, () => {
+
+        let result = true
+
+        array2.forEach(element => {
+            result = array1.includes(element)
+            if(result === false){
+                return
+            }
+        })
+
+        return result
+    })
+    
+}
+
+function expectArraysToBeEqual(subjectAlias, subject, targetAlias, target, bool=true){
+/**
+ * @abstract Array Equality analyzes each element and determines if they are all the same.
+ */
+    if(!Array.isArray(subject) || !Array.isArray(target)) { throw new InvalidArrayError() }
+
+    const description = `${getCounter()} Array '${subjectAlias}' ${matches(bool)} '${targetAlias}'`
 
     it(description, () => {
         bool
@@ -230,17 +211,6 @@ function arraysMismatchTests(){
 
 }
 
-function expectObjectsMismatch(subjectAlias, subject, targetAlias, target, bool=true){
-    const objectArray = [{}, {}]
-    objectArray[subjectAlias] = subject
-    objectArray[targetAlias] = target
-    it(`${getCounter()} objectsMismatch ${recognizes(bool)} mismatching objects`, () => {
-        if(typeof subject !== 'object' || typeof target !== 'object'){
-            throw new InvalidInputError('expectObjectsMismatch', 'object', objectArray) //(subject, target, 'object')
-        }
-    })
-}
-
 /*** @helper function ***/
 function arraysMismatch(subject, target){
 /*** @tested by arraysMistmatchTests() ***/
@@ -267,10 +237,26 @@ function arraysAreEqual(subjects, target){
     // return true
 }
 
+/** @todo test this */
+function expectStringToInclude(subject, target, bool=true){
+    subject = subject.trim()
+    target = target.trim()
+
+    const description = `${getCounter} '${subject}' contains '${target}'`
+    it(description, () => {
+        bool
+            ? expect(subject.includes(target)).to.be.true
+            : expect(subject.includes(target)).to.be.true
+    })
+}
+
+/**
+ * @section Strings
+ */
 function stringsMatch(subjectAlias, subject, targetAlias, target, caseSensitive=true, bool=true){
     if(typeof subject !== 'string' || typeof target !== 'string') {throw new InvalidInputError('stringsMatch', 'string', [{subjectAlias: subject}, {targetAlias: target}])} //`StringsMatch: your subject: ${subject}, target: ${target}, or both are not strings`)}
 
-    const description = `${getCounter()} string: ${subjectAlias} ${matches(bool)} string (case sensitive by default): ${targetAlias}`
+    const description = `${getCounter()} string: '${subjectAlias}' ${matches(bool)} string (case sensitive by default): '${targetAlias}'`
 
     it(description, () => {
 
@@ -304,16 +290,19 @@ function stringsMismatchTests(){
     })
 }
 
-/*** @helper function ***/
 function stringsMismatch(subject, target, bool){
-/*** @tested implicitly by arrayMatch() ***/
+/** 
+ * @tested implicitly by arrayMatch()
+ * @abstract mismatch functions return a boolean for logic use
+ * @helper function
+ */
     return !typeof subject === 'string' ||
         !typeof target === 'string' ||
         !stringsEqual(subject, target, bool)
 }
 
-/*** @helper function ***/
 function stringsEqual(subject, target, caseSensitive=true){
+/*** @helper function ***/
 /*** @tested implicitly by arrayMatch() ***/
     if(!caseSensitive){
         subject = subject.toLowerCase()
@@ -323,6 +312,7 @@ function stringsEqual(subject, target, caseSensitive=true){
     return subject === target
 }
 
+/** @section Null */
 function expectToBeNull(param, bool=true){
     const description = `${getCounter()} ${param} ${is(bool)} null`
 
@@ -333,11 +323,98 @@ function expectToBeNull(param, bool=true){
     })
 }
 
+/** @section Objects */
+function objectsAreEquivalent(subjectAlias, subject, targetAlias,  target){
+    /** 
+     * @abstract Equivalence
+     * @todo define equivalence
+     * @todo write tests
+     * @todo Refactor objectsAreEquivalent
+    */
+    const description = `${getCounter()} '${subjectAlias}' matches '${targetAlias}' properties`
+
+    it(description,() => {
+        const subjectKeys = Object.keys(subject)
+        const targetKeys = Object.keys(target)
+        const subjectValues = Object.values(subject)
+        const targetValues = Object.values(target)
+
+        expect(subjectKeys.length).to.eql(targetKeys.length)
+        expect(subjectValues.length).to.eql(subjectValues.length)
+
+        let i = 0
+        subjectValues.forEach(subjectValue => {
+            expect(targetValues[i]).to.eql(subjectValue)
+            i++
+        })
+    })
+}
+
+function expectObjectsAreEqual(subjectAlias, subject, targetAlias, target, bool=true){
+/*** @todo write tests ***/
+    const description = `${getCounter()} '${subjectAlias}' ${matches(bool)} '${targetAlias}'`
+
+    it(description, () => {
+        const result = objectsEqual(subject, target)
+
+        bool
+            ? expect(result).to.be.true
+            : expect(result).to.be.false
+    })
+}
+    
+function expectObjectsMismatch(subjectAlias, subject, targetAlias, target, bool=true){
+    const objectArray = [{}, {}]
+    objectArray[subjectAlias] = subject
+    objectArray[targetAlias] = target
+    it(`${getCounter()} objectsMismatch ${recognizes(bool)} mismatching objects`, () => {
+        if(typeof subject !== 'object' || typeof target !== 'object'){
+            throw new InvalidInputError('expectObjectsMismatch', 'object', objectArray) //(subject, target, 'object')
+        }
+    })
+}
+
+function objectsMismatch(subject, target){
+    /*** @tested implicitly by arrayMatch() ***/
+    /**
+     * @abstract this is a testing class that is used in if-else statements for flow control.
+     * @tested implicitly by objectsAreEqual() 
+     */
+    return typeof subject === 'object' &&
+            typeof target === 'object' &&
+            !objectsEqual(subject, target)
+}
+    
+function objectsEqual(subject, target){
+    if(typeof subject !== 'object' || typeof target !== 'object'  ){
+        return false
+    }
+    let result = true
+
+    let i = 0
+    const subjectEntries = Object.entries(subject)
+    const targetEntries = Object.entries(target)
+
+    subjectEntries.forEach(entry => {
+        let j = 0
+        entry.forEach(value => {
+            if(value !== targetEntries[i][j]) {
+                result = false
+            }
+            j++
+        })
+        i++
+    })
+    return result
+}
+
+/** @section Error Throws */
 function throwsError(subjectAlias, subject, param=null, bool=true, error=Error){
 /** 
  *  @debug If you run into problems with this, check the function you are 
- *      testing to see if you are handling the error you are expecting.     ***/
-    const description = `${getCounter()} ${subjectAlias}(${param}) ${throwsAnError(bool)} ${error.name}`
+ *      testing to see if you are handling the error you are expecting.
+ */
+    const description = `${getCounter()} '${subjectAlias}'(${param}) ${throwsAnError(bool)} ${error.name}`
     const fn = () => {
         subject(param)
     }
@@ -371,7 +448,8 @@ function nullCheck(value){
     }
 }
 
-class InvalidInputError extends Error {
+/** @section Errors specific to this library */
+class InvalidInputError extends TypeError {
     constructor(methodAlias, type, subjectArray=[{subjectAlias: subject}, {targetAlias: target}]){
         let message = `${methodAlias}: your `
 
@@ -381,19 +459,22 @@ class InvalidInputError extends Error {
             }
         })
 
-        // for(const [key, value] of Object.entries(subjectArray)){
-        //     message += `${key}: ${typeof value} `
-        // }
-
         message += `are not "${type}"`
         super('InvalidInputError: ' + message)
     }
 }
 
+class InvalidArrayError extends TypeError {
+    constructor(){
+        super('Your subject, target, or both are not arrays.')
+    }
+}
+
+
 export {
     // for testing only
     arraysAreEqual,
-    arraysMatch,
+    expectArraysToBeEqual as arraysMatch,
     arraysMismatchTests,
     // objectsMatch,
     stringsMatch,
@@ -410,7 +491,11 @@ export {
     getCounter,
     expectToBeTrue,
     expectValuesToMatch,
+    expectArraysToBeEqual,
+    expectArrayToInclude,
+    expectArraytoIncludeArrayContents,
     objectsAreEquivalent,
+    expectStringToInclude,
     expectObjectsAreEqual,
     expectToBeNull,
     throwsError,
