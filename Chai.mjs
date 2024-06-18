@@ -244,7 +244,7 @@ function expectStringToInclude(subjectAlias=null, subject, targetAlias=null, tar
     it(description, () => {
         bool
             ? expect(subject.includes(target)).to.be.true
-            : expect(subject.includes(target)).to.be.true
+            : expect(subject.includes(target)).to.be.false
     })
 }
 
