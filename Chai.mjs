@@ -82,12 +82,10 @@ function recognizes(bool){
         : 'does not recognize'
 }
 
-/** 
- * @section Test functions 
- */
-/**
- * @section Value matching
- */
+
+
+/*** @section Test functions ***/
+/*** @section Value matching ***/
 function expectValuesToMatch(subject, object=null, bool=true, description=null){
     try {
         nullCheck(subject)
@@ -111,9 +109,16 @@ function expectValuesToMatch(subject, object=null, bool=true, description=null){
     }
 }
 
-/**
- * @section Boolean
- */
+function expectValuesToEqual(subjectAlias, subject, targetAlias, target=null, bool=true){
+    const describe = `${getCounter()} ${subjectAlias} ${matches(bool)} ${targetAlias}`
+    it(describe, () => {
+        bool
+            ? expect(subject).to.eql(target)
+            : expect(subject).to.not.eql(target)
+    })
+}
+
+/*** @section Boolean */
 function expectToBeTrue(subject, bool=true, description=null){
     nullCheck(subject)
     description !== null
@@ -490,6 +495,7 @@ export {
     expectToBeTrue,
     expectValuesToMatch,
     expectArraysToBeEqual,
+    expectValuesToEqual,
     expectArrayToInclude,
     expectArraytoIncludeArrayContents,
     objectsAreEquivalent,
