@@ -316,8 +316,8 @@ function stringsEqual(subject, target, caseSensitive=true){
 }
 
 /** @section Null */
-function expectToBeNull(param, bool=true){
-    const description = `${getCounter()} ${param} ${is(bool)} null`
+function expectToBeNull(alias, param, bool=true){
+    const description = `${getCounter()} ${alias!=='' ? alias : param} ${is(bool)} null`
 
     it(description, () => {
         bool
