@@ -119,11 +119,9 @@ function expectValuesToEqual(subjectAlias, subject, targetAlias, target=null, bo
 }
 
 /*** @section Boolean */
-function expectToBeTrue(subject, bool=true, description=null){
+function expectToBeTrue(subjectAlias, subject, bool=true){
     nullCheck(subject)
-    description !== null
-        ? description = `${getCounter()} ${description}`
-        : description = `${getCounter()} ${subject} ${is(bool)} true`
+    const description = `${getCounter()} ${subjectAlias} ${is(bool)} true`
 
     it(description, () => {
         bool
@@ -240,8 +238,13 @@ function arraysAreEqual(subjects, target){
     return passes
 }
 
-/** @todo test this */
 function expectStringToInclude(subjectAlias=null, subject, targetAlias=null, target, bool=true){
+/**
+ * @method
+ * @note
+ *      arguments contain 'subjectAlias' and 'targetAlias' in case the subject and/or target 
+ *      contains sensitive data that needs to remain secret.
+ */
     subject = subject.trim()
     target = target.trim()
 
