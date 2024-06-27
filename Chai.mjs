@@ -238,13 +238,15 @@ function arraysAreEqual(subjects, target){
     return passes
 }
 
-function expectStringToInclude(subjectAlias=null, subject, targetAlias=null, target, bool=true){
+function expectStringToInclude(subjectAlias, subject=subjectAlias, targetAlias, target=targetAlias, bool=true){
 /**
  * @method
  * @note
  *      arguments contain 'subjectAlias' and 'targetAlias' in case the subject and/or target 
  *      contains sensitive data that needs to remain secret.
  */
+    if(!subject) subject = subjectAlias
+    if(!target) target = targetAlias
     subject = subject.trim()
     target = target.trim()
 
