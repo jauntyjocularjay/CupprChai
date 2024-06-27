@@ -8,10 +8,10 @@ import {
     matches,
     getCounter,
     expectValuesToMatch,
-    objectsMatch,
+    expectObjectsAreEqual as objectsMatch,
     throwsError,
     nullCheck
-} from './Chai.mjs'
+} from '../../chaitests/Chai.mjs'
 import { expect } from 'chai'
 import Ajv from 'ajv'
 
