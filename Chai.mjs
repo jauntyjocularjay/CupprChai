@@ -1,114 +1,155 @@
 import { expect } from 'chai'
+import {
+    getCounter,
+    throwsAnError,
+    contains,
+    did,
+    does,
+    have,
+    has,
+    is,
+    matches,
+    recognizes
+} from './module/verbs/Verbs.mjs'
 
 
 
-/**
- * @description Description variables, constants and functions 
- */
-let counter = 0
+/*** 
+ * @section Test functions 
+ * @terminology
+ *      match: to
+*/
 
-function throwsAnError(bool=true){
-    if(bool){
-        return 'successfully threw an error:' 
-    } else{
-        return 'did NOT throw an error:'
-    }
-}
-
-function getCounter(){
-    counter++
-    return `Test ${counter} -`
-}
-
-function contains(bool=true){
-    if(bool){
-        return 'contains'
-    } else {
-        return 'does NOT contain'
-    }
-}
-
-function did(bool=true){
-    if(bool){
-        return 'did'
-    } else {
-        return 'did NOT'
-    }
-}
-
-function does(bool=true){
-    if(bool){
-        return 'does'
-    } else {
-        return 'does NOT'
-    }
-}
-
-function have(bool){
-    if(bool){
-        return 'have'
-    } else {
-        return  'NOT have'
-    }
-}
-
-function has(bool){
-    if(bool){
-        return 'has'
-    } else {
-        return 'does NOT have'
-    }
-}
-
-function is(bool){
-    if(bool){
-        return 'is'
-    } else {
-        return 'is NOT'
-    }
-}
-
-function matches(bool){
-    if(bool){
-        return 'matches'
-    } else {
-        return 'does not match'
-    }
-}
-
-function recognizes(bool){
-    bool
-        ? 'recognizes'
-        : 'does not recognize'
-}
-
-
-
-/*** @section Test functions ***/
-/*** @section Value matching ***/
-function expectValuesToMatch(subject, object=null, bool=true, description=null){
-    try {
-        nullCheck(subject)
-
-        description !== null
-            ? description = `${getCounter()} ${description}`
-            : description = `${getCounter()} '${subject}' ${matches(bool)} '${object}'`
-
-        it(description, () => {
+const expects = {
+    valuesToEql: (subject, object=null, bool=true, description=null) => {
+        try {
+            nullCheck(subject)
+    
+            description !== null
+                ? description = `${getCounter()} ${description}`
+                : description = `${getCounter()} '${subject}' ${matches(bool)} '${object}'`
+    
+            it(description, () => {
+                bool
+                    ? expect(subject).to.eql(object)
+                    : expect(subject).to.not.eql(object)
+            })
+        } catch(error) {
+            const description = `${getCounter()} '${subject}' ${matches(bool)} '${object}'`
+    
+            it(description + throwsAnError, () => {
+                expect(true).to.eql(false)
+            })
+    
+        }
+    },
+    constructor: {
+        toThrow: (nameStr, className, param=null, bool=true, error=Error) => {
+            const description = `${getCounter()} ${nameStr} constructor ${throwsAnError(bool)} ${error.name}`
+        
+            const instance = () => {
+                new className(param)
+            }
+            
+            it(description, () => {
+                bool
+                    ? expect(instance).to.throw(error)
+                    : expect(instance).to.not.throw(error)
+            })
+        },
+    },
+    boolean: {
+        toBeTrue: (subjectAlias, subject, bool=true) => {
+            nullCheck(subject)
+            const description = `${getCounter()} ${subjectAlias} ${is(bool)} true`
+        
+            it(description, () => {
+                bool
+                    ? expect(subject).to.be.true
+                    : expect(subject).to.be.false
+            })
+        },
+    },
+    array: {
+        toInclude(array, element, bool=true){
+            /**
+             * @param {*} array1 
+             * @param {*} array2 
+             * @param {*} bool 
+             * @returns 
+             */
+                const description = `${getCounter()} Array ${has(bool)} ${element} as an element:`
+                
+                it(description, () => {
+                    bool
+                        ? expect(array.includes(element)).to.be.true
+                        : expect(array.includes(element)).to.be.false
+                })
+        },
+        toIncludeArrayContents: (array1Alias, array1=[], array2Alias, array2=[], bool=true) => {
+        /**
+         * @todo write tests
+         * @param {*} array1 
+         * @param {*} array2 
+         * @param {*} bool 
+         * @returns 
+         */
+            if(!Array.isArray(array1) || !Array.isArray(array2)){ throw new InvalidArrayError() }
+        
+            const description = ` ${array1Alias} ${contains(bool)} ALL of: ${array2Alias}`
+            it(getCounter() + description, () => {
+        
+                let result = true
+        
+                array2.forEach(element => {
+                    result = array1.includes(element)
+                    if(result === false){
+                        return
+                    }
+                })
+        
+                return result
+            })
+            
+        }
+    },
+    null: {
+        toBe: (alias, param, bool=true) => {
+            const description = `${getCounter()} ${alias!=='' ? alias : param} ${is(bool)} null`
+        
+            it(description, () => {
+                bool
+                    ? expect(param).to.be.null
+                    : expect(param).to.not.be.null
+            })
+        }
+    },
+    function: {
+        toThrow: (subjectAlias, subject, param=null, bool=true, error=Error) => {
+            expects.toThrow(subjectAlias, subject, param, bool, error)
+        }
+    },
+    toThrow: (subjectAlias, subject, param=null, bool=true, error=Error) => {
+    /** 
+     *  @debug If you run into problems with this, check the function you are 
+     *      testing to see if you are handling the error you are expecting.
+     */
+        const description = `${getCounter()} '${subjectAlias}'(${param}) ${throwsAnError(bool)} ${error.name}`
+        const fn = () => {
+            subject(param)
+        }
+    
+        it(description,() => {
             bool
-                ? expect(subject).to.eql(object)
-                : expect(subject).to.not.eql(object)
+                ? expect(fn).to.throw(error)
+                : expect(fn).to.not.throw(error)
         })
-    } catch(error) {
-        const description = `${getCounter()} '${subject}' ${matches(bool)} '${object}'`
-
-        it(description + throwsAnError, () => {
-            expect(true).to.eql(false)
-        })
-
     }
 }
 
+function expectValuesToMatch(subject, object=null, bool=true, description=null){
+    expects.valuesToEql(subject, object, bool, description)
+}
 function expectValuesToEqual(subjectAlias, subject, targetAlias, target=null, bool=true){
     const describe = `${getCounter()} ${subjectAlias} ${matches(bool)} ${targetAlias}`
     it(describe, () => {
@@ -117,79 +158,8 @@ function expectValuesToEqual(subjectAlias, subject, targetAlias, target=null, bo
             : expect(subject).to.not.eql(target)
     })
 }
-
-/*** @section Boolean */
 function expectToBeTrue(subjectAlias, subject, bool=true){
-    nullCheck(subject)
-    const description = `${getCounter()} ${subjectAlias} ${is(bool)} true`
-
-    it(description, () => {
-        bool
-            ? expect(subject).to.be.true
-            : expect(subject).to.be.false
-    })
-}
-
-
-/**
- * @section Arrays
- */
-function expectArrayToInclude(array, element, bool=true){
-/**
- * @param {*} array1 
- * @param {*} array2 
- * @param {*} bool 
- * @returns 
- */
-    const description = `${getCounter()} Array ${has(bool)} ${element} as an element:`
-    
-    it(description, () => {
-        bool
-            ? expect(array.includes(element)).to.be.true
-            : expect(array.includes(element)).to.be.false
-    })
-}
-
-function expectArraytoIncludeArrayContents(array1Alias, array1=[], array2Alias, array2=[], bool=true){
-/**
- * @todo write tests
- * @param {*} array1 
- * @param {*} array2 
- * @param {*} bool 
- * @returns 
- */
-    if(!Array.isArray(array1) || !Array.isArray(array2)){ throw new InvalidArrayError() }
-
-    const description = ` ${array1Alias} ${contains(bool)} ALL of: ${array2Alias}`
-    it(getCounter() + description, () => {
-
-        let result = true
-
-        array2.forEach(element => {
-            result = array1.includes(element)
-            if(result === false){
-                return
-            }
-        })
-
-        return result
-    })
-    
-}
-
-function expectArraysToBeEqual(subjectAlias, subject, targetAlias, target, bool=true){
-/**
- * @abstract Array Equality analyzes each element and determines if they are all the same.
- */
-    if(!Array.isArray(subject) || !Array.isArray(target)) { throw new InvalidArrayError() }
-
-    const description = `${getCounter()} Array '${subjectAlias}' ${matches(bool)} '${targetAlias}'`
-
-    it(description, () => {
-        bool
-            ? expect(arraysAreEqual(subject, target)).to.be.true
-            : expect(arraysAreEqual(subject, target)).to.be.false
-    })
+    expects.boolean.toBeTrue(subjectAlias, subject, bool)
 }
 
 /*** @tests exported to spec ***/
@@ -214,30 +184,33 @@ function arraysMismatchTests(){
 
 }
 
-/*** @helper function ***/
-function arraysMismatch(subject, target){
-/*** @tested by arraysMistmatchTests() ***/
-return !Array.isArray(subject) ||
-        !Array.isArray(target) ||
-        !arraysAreEqual(subject, target)
+/**
+ * @section Arrays
+ */
+function expectArrayToInclude(array, element, bool=true){
+    expects.array.toInclude(array, element, bool)
+}
+function expectArraytoIncludeArrayContents(array1Alias, array1=[], array2Alias, array2=[], bool=true){
+    expects.array.toIncludeArrayContents(array1Alias, array1, array2Alias, array2, bool)
 }
 
-/*** @helper function ***/
-function arraysAreEqual(subjects, target){
-/*** @tested implicitly by arrayMatch() ***/
-    let passes = true
-    let s = 0
+/** @todo migrate to Expects */
+function expectArraysToBeEqual(subjectAlias, subject, targetAlias, target, bool=true){
+/**
+ * @abstract Array Equality analyzes each element and determines if they are all the same.
+ */
+    if(!Array.isArray(subject) || !Array.isArray(target)) { throw new InvalidArrayError() }
 
-    subjects.forEach(subject => {
-        if (subject === target[s]){
-            s++
-        } else {
-            passes = false
-        }
+    const description = `${getCounter()} Array '${subjectAlias}' ${matches(bool)} '${targetAlias}'`
+
+    it(description, () => {
+        bool
+            ? expect(arraysAreEqual(subject, target)).to.be.true
+            : expect(arraysAreEqual(subject, target)).to.be.false
     })
-    return passes
 }
 
+/** @todo migrate to Expects */
 function expectStringToInclude(subjectAlias, subject=subjectAlias, targetAlias, target=targetAlias, bool=true){
 /**
  * @method
@@ -321,14 +294,9 @@ function stringsEqual(subject, target, caseSensitive=true){
 }
 
 /** @section Null */
+/** @todo migrate to Expects */
 function expectToBeNull(alias, param, bool=true){
-    const description = `${getCounter()} ${alias!=='' ? alias : param} ${is(bool)} null`
-
-    it(description, () => {
-        bool
-            ? expect(param).to.be.null
-            : expect(param).to.not.be.null
-    })
+    expects.null.toBe(alias, param, bool)
 }
 
 /** @section Objects */
@@ -358,6 +326,7 @@ function objectsAreEquivalent(subjectAlias, subject, targetAlias,  target){
     })
 }
 
+/** @todo migrate to Expects */
 function expectObjectsAreEqual(subjectAlias, subject, targetAlias, target, bool=true){
 /*** @todo write tests ***/
     const description = `${getCounter()} '${subjectAlias}' ${matches(bool)} '${targetAlias}'`
@@ -370,7 +339,8 @@ function expectObjectsAreEqual(subjectAlias, subject, targetAlias, target, bool=
             : expect(result).to.be.false
     })
 }
-    
+
+/** @todo migrate to Expects */
 function expectObjectsMismatch(subjectAlias, subject, targetAlias, target, bool=true){
     const objectArray = [{}, {}]
     objectArray[subjectAlias] = subject
@@ -380,6 +350,27 @@ function expectObjectsMismatch(subjectAlias, subject, targetAlias, target, bool=
             throw new InvalidInputError('expectObjectsMismatch', 'object', objectArray) //(subject, target, 'object')
         }
     })
+}
+
+/** @section Error Throws */
+function ExpectToThrowError(subjectAlias, subject, param=null, bool=true, error=Error){
+    expects.toThrow(subjectAlias, subject, param, bool, error)
+}
+
+/** @todo migrate to Expects */
+function expectConstructorToThrowError(nameStr, className, param=null, bool=true, error=Error){
+    expects.constructor.toThrow(nameStr, className, param, bool, error)
+}
+
+
+
+/** @section Helper Functions */
+function nullCheck(value){
+    if(value === null){
+        throw new TypeError('nullCheck() failed, argument is null')
+    } else {
+        return false
+    }
 }
 
 function objectsMismatch(subject, target){
@@ -416,44 +407,26 @@ function objectsEqual(subject, target){
     return result
 }
 
-/** @section Error Throws */
-function throwsError(subjectAlias, subject, param=null, bool=true, error=Error){
-/** 
- *  @debug If you run into problems with this, check the function you are 
- *      testing to see if you are handling the error you are expecting.
- */
-    const description = `${getCounter()} '${subjectAlias}'(${param}) ${throwsAnError(bool)} ${error.name}`
-    const fn = () => {
-        subject(param)
-    }
-
-    it(description,() => {
-        bool
-            ? expect(fn).to.throw(error)
-            : expect(fn).to.not.throw(error)
-    })
+function arraysMismatch(subject, target){
+/*** @tested by arraysMistmatchTests() ***/
+return !Array.isArray(subject) ||
+        !Array.isArray(target) ||
+        !arraysAreEqual(subject, target)
 }
 
-function expectConstructorToThrowError(nameStr, className, param=null, bool=true, error=Error){
-    const description = `${getCounter()} ${nameStr} constructor ${throwsAnError(bool)} ${error.name}`
+function arraysAreEqual(subjects, target){
+/*** @tested implicitly by arrayMatch() ***/
+    let passes = true
+    let s = 0
 
-    const instance = () => {
-        new className(param)
-    }
-    
-    it(description, () => {
-        bool
-            ? expect(instance).to.throw(error)
-            : expect(instance).to.not.throw(error)
+    subjects.forEach(subject => {
+        if (subject === target[s]){
+            s++
+        } else {
+            passes = false
+        }
     })
-}
-
-function nullCheck(value){
-    if(value === null){
-        throw new TypeError('nullCheck() failed, argument is null')
-    } else {
-        return false
-    }
+    return passes
 }
 
 /** @section Errors specific to this library */
@@ -507,7 +480,8 @@ export {
     expectStringToInclude,
     expectObjectsAreEqual,
     expectToBeNull,
-    throwsError,
+    ExpectToThrowError as throwsError,
     expectConstructorToThrowError,
     nullCheck,
 }
+

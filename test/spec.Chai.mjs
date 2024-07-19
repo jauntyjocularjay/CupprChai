@@ -21,7 +21,7 @@ import {
 } from '../Chai.mjs'
 import { expect } from 'chai'
 
-describe('Chai Tests', () => {
+describe('Chai.mjs', () => {
     const obj1 = {
         string: 'str',
         boolean: true,
@@ -47,9 +47,9 @@ describe('Chai Tests', () => {
         })
 
         describe('throwsAnError() for descriptions', () => {
-            expectValuesToMatch(throwsAnError(), 'successfully threw an error:')
-            expectValuesToMatch(throwsAnError(true), 'successfully threw an error:')
-            expectValuesToMatch(throwsAnError(false), 'did NOT throw an error:')
+            expectValuesToMatch(throwsAnError(), 'successfully threw an error')
+            expectValuesToMatch(throwsAnError(true), 'successfully threw an error')
+            expectValuesToMatch(throwsAnError(false), 'did NOT throw an error')
         } )
 
         describe('Verbs', () => {
@@ -86,7 +86,6 @@ describe('Chai Tests', () => {
             expectObjectsAreEqual('obj1:', obj1, 'obj3:', obj3, false)
         })
     })
-
 
     describe('Arrays', () => {
         describe('Array Inclusion', () => {
