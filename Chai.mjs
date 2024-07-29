@@ -21,7 +21,7 @@ import {
 */
 
 const expects = {
-    valuesToEql: (subject, object = null, bool = true, description = null) => {
+    valueToEql: (subject, object = null, bool = true, description = null) => {
         try {
             nullCheck(subject)
 
@@ -72,12 +72,12 @@ const expects = {
     },
     array: {
         toInclude(array, element, bool = true) {
-            /**
-             * @param {*} array1 
-             * @param {*} array2 
-             * @param {*} bool 
-             * @returns 
-             */
+        /**
+         * @param {*} array1 
+         * @param {*} array2 
+         * @param {*} bool 
+         * @returns 
+         */
             const description = `${getCounter()} Array ${has(bool)} ${element} as an element:`
 
             it(description, () => {
@@ -87,13 +87,13 @@ const expects = {
             })
         },
         toIncludeArrayContents: (array1Alias, array1 = [], array2Alias, array2 = [], bool = true) => {
-            /**
-             * @todo write tests
-             * @param {*} array1 
-             * @param {*} array2 
-             * @param {*} bool 
-             * @returns 
-             */
+        /**
+         * @todo write tests
+         * @param {*} array1 
+         * @param {*} array2 
+         * @param {*} bool 
+         * @returns 
+         */
             if (!Array.isArray(array1) || !Array.isArray(array2)) { throw new InvalidArrayError() }
 
             const description = ` ${array1Alias} ${contains(bool)} ALL of: ${array2Alias}`
@@ -130,10 +130,10 @@ const expects = {
         }
     },
     toThrow: (subjectAlias, subject, param = null, bool = true, error = Error) => {
-        /** 
-         *  @debug If you run into problems with this, check the function you are 
-         *      testing to see if you are handling the error you are expecting.
-         */
+    /** 
+     *  @debug If you run into problems with this, check the function you are 
+     *      testing to see if you are handling the error you are expecting.
+     */
         const description = `${getCounter()} '${subjectAlias}'(${param}) ${throwsAnError(bool)} ${error.name}`
         const fn = () => {
             subject(param)
@@ -148,8 +148,9 @@ const expects = {
 }
 
 function expectValuesToMatch(subject, object = null, bool = true, description = null) {
-    expects.valuesToEql(subject, object, bool, description)
+    expects.valueToEql(subject, object, bool, description)
 }
+
 function expectValuesToEqual(subjectAlias, subject, targetAlias, target = null, bool = true) {
     const describe = `${getCounter()} ${subjectAlias} ${matches(bool)} ${targetAlias}`
     it(describe, () => {
@@ -190,6 +191,7 @@ function arraysMismatchTests() {
 function expectArrayToInclude(array, element, bool = true) {
     expects.array.toInclude(array, element, bool)
 }
+
 function expectArraytoIncludeArrayContents(array1Alias, array1 = [], array2Alias, array2 = [], bool = true) {
     expects.array.toIncludeArrayContents(array1Alias, array1, array2Alias, array2, bool)
 }
