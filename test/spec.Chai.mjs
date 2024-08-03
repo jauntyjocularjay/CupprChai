@@ -7,17 +7,21 @@ import {
     is,
     matches,
     getCounter,
+    expects,
     expectToBeTrue,
     expectValuesToMatch,
     objectsAreEquivalent,
     expectObjectsAreEqual,
     expectToBeNull,
-    throwsError,
+    ExpectToThrowError,
     expectConstructorToThrowError,
     nullCheck,
     expectArrayToInclude,
     expectArraytoIncludeArrayContents,
     expectArraysToBeEqual,
+    InvalidInputError,
+    InvalidArrayError,
+    NullCheckError,
 } from '../Chai.mjs'
 import { expect } from 'chai'
 
@@ -41,43 +45,17 @@ describe('Chai.mjs', () => {
     const primary_colors = ['red', 'yellow', 'blue']
     const secondary_colors = ['orange', 'green', 'violet']
 
-    describe('Description constants and functions', () => {
-        describe('getCounter()', () => {
-            expectValuesToMatch(getCounter(), 'Test 1 -')
-        })
-
-        describe('throwsAnError() for descriptions', () => {
-            expectValuesToMatch(throwsAnError(), 'successfully threw an error')
-            expectValuesToMatch(throwsAnError(true), 'successfully threw an error')
-            expectValuesToMatch(throwsAnError(false), 'did NOT throw an error')
-        } )
-
-        describe('Verbs', () => {
-            expectValuesToMatch(did(true), 'did')
-            expectValuesToMatch(did(true), 'did NOT', false)
-            expectValuesToMatch(did(false), 'did', false)
-            expectValuesToMatch(did(false), 'did NOT')
-            expectValuesToMatch(have(true), 'have')
-            expectValuesToMatch(have(true), 'NOT have', false)
-            expectValuesToMatch(have(false), 'have', false)
-            expectValuesToMatch(have(false), 'NOT have')
-            expectValuesToMatch(has(true), 'has')
-            expectValuesToMatch(has(false), 'does NOT have')
-            expectValuesToMatch(is(true), 'is')
-            expectValuesToMatch(is(true), 'is NOT', false)
-            expectValuesToMatch(is(false), 'is', false)
-            expectValuesToMatch(is(false), 'is NOT')
-            expectValuesToMatch(does(true), 'does')
-            expectValuesToMatch(does(false), 'does NOT')
-
+    describe('Constructor', () => {
+        describe('To throw error', () => {
+            expects.constructor.toThrow('throws error', Math, ['asdasdf'])
         })
     })
 
-    describe('Error Throws', () => {
-        throwsError('Throw new error', () => {throw new Error('Test error')})
-        throwsError('nullCheck()', nullCheck, null)
-        throwsError('expectValuesToMatch()', expectValuesToMatch, ['array'], false)
-        expectConstructorToThrowError('throws error', Math, 'asdfadf')
+    describe('Functions', () => {
+        describe('to throw Error', () => {        
+            expects.function.toThrow('Throw new error', () => { throw new Error('Test error') })
+            expects.function.toThrow('expectValuesToMatch()', expectValuesToMatch(['array'], ['array']), false)
+        })    
     })
 
     describe('Objects', () => {
@@ -106,6 +84,15 @@ describe('Chai.mjs', () => {
     })
     
 
+    describe('Legacy', () => {
+        describe('Functions', () => {
+            describe('to throw Error', () => {        
+                ExpectToThrowError('Throw new error', () => {throw new Error('Test error')})
+                ExpectToThrowError('nullCheck()', nullCheck, null)
+                ExpectToThrowError('expectValuesToMatch()', expectValuesToMatch, ['array'], false)
+            })    
+        })    
+    })
 })
 
 
