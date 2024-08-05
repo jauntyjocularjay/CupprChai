@@ -25,6 +25,18 @@ import {
 } from '../Chai.mjs'
 import { expect } from 'chai'
 
+class FailingClass {
+    constructor(param) {
+        if (param === null) {
+            throw new NullCheckError('Null parameter')
+        }
+
+        if (typeof param === 'string'){
+            throw new InvalidInputError('FailingClass.constructor("string")', 'string', ['string'])
+        }
+    }
+}
+
 describe('Chai.mjs', () => {
     const obj1 = {
         string: 'str',
@@ -47,7 +59,8 @@ describe('Chai.mjs', () => {
 
     describe('Constructor', () => {
         describe('To throw error', () => {
-            expects.constructor.toThrow('throws error', Math, ['asdasdf'])
+            expects.constructor.toThrow('throws error', true, NullCheckError, FailingClass, null)
+            expects.constructor.toThrow('throws error', true, InvalidInputError, FailingClass, 'string')
         })
     })
 
@@ -67,19 +80,15 @@ describe('Chai.mjs', () => {
 
     describe('Arrays', () => {
         describe('Array Inclusion', () => {
-            expectArrayToInclude(colors, 'green')
-            expectArrayToInclude(colors, 'orange', true)
-            expectArrayToInclude(colors, 'brown', false)
-    
-            expectArraytoIncludeArrayContents(colors, primary_colors)
-            expectArraytoIncludeArrayContents(colors, secondary_colors, true)
-            expectArraytoIncludeArrayContents(primary_colors, secondary_colors, false)
+            expects.array.toInclude(colors, 'green')
+            expects.array.toInclude(colors, 'orange', true)
+            expects.array.toInclude(colors, 'brown', false)
         })
     
         describe('Array Comparison', () => {
-            expectArraysToBeEqual('colors', colors, 'the same array', colors)
-            expectArraysToBeEqual('colors', colors, 'the same array', colors, true)
-            expectArraysToBeEqual('colors', colors, 'the same array', primary_colors, false)
+            expects.array.toEqual('colors', colors, 'the same array', colors)
+            expects.array.toEqual('colors', colors, 'the same array', colors, true)
+            expects.array.toEqual('colors', colors, 'the same array', primary_colors, false)
         })
     })
     
@@ -90,8 +99,22 @@ describe('Chai.mjs', () => {
                 ExpectToThrowError('Throw new error', () => {throw new Error('Test error')})
                 ExpectToThrowError('nullCheck()', nullCheck, null)
                 ExpectToThrowError('expectValuesToMatch()', expectValuesToMatch, ['array'], false)
-            })    
-        })    
+            })
+        })
+
+        describe('Arrays', () => {
+            describe('To include', () => {
+                expectArrayToInclude(colors, 'green')
+                expectArrayToInclude(colors, 'orange', true)
+                expectArrayToInclude(colors, 'brown', false)
+            })
+    
+            describe('Array Comparison', () => {
+                expectArraysToBeEqual('colors', colors, 'the same array', colors)
+                expectArraysToBeEqual('colors', colors, 'the same array', colors, true)
+                expectArraysToBeEqual('colors', colors, 'the same array', primary_colors, false)
+            })
+        })
     })
 })
 

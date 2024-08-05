@@ -44,25 +44,11 @@ const expects = {
         }
     },
     constructor: {
-        toThrow: (classAlias, className, param = [], error = Error, bool = true) => {
-            const description = 
-                `${getCounter()} ${classAlias} constructor ${throwsAnError(bool)} ${error.name}`
-
-            const instance = () => {
-                new className(param)
-            }
-
-            it(description, () => {
-                bool
-                    ? expect(instance).to.throw(error)
-                    : expect(instance).to.not.throw(error)
-            })
-        },
-        toThrow: (nameStr, className, param = null, bool = true, error = Error) => {
+        toThrow: (nameStr, bool = true, error = Error, className, ...params) => {
             const description = `${getCounter()} ${nameStr} constructor ${throwsAnError(bool)} ${error.name}`
 
             const instance = () => {
-                new className(param)
+                new className(params)
             }
 
             it(description, () => {
@@ -126,7 +112,7 @@ const expects = {
             })
 
         },
-        toEql(subjectAlias, subject, targetAlias, target, bool = true){
+        toEqual(subjectAlias, subject, targetAlias, target, bool = true){
         /**
          *  @abstract Array Equality analyzes each element and determines if they are all the same.
          *  @method expecs.array.toEql()
@@ -253,6 +239,7 @@ function arraysMismatchTests() {
 }
 
 /** @section Arrays */
+/** @todo  */
 function expectArrayToInclude(array, element, bool = true) {
     expects.array.toInclude(array, element, bool)
 }
@@ -262,7 +249,7 @@ function expectArraytoIncludeArrayContents(array1Alias, array1 = [], array2Alias
 }
 
 function expectArraysToBeEqual(subjectAlias, subject, targetAlias, target, bool = true) {
-    expects.array.toEql(subjectAlias, subject, targetAlias, target, bool)
+    expects.array.toEqual(subjectAlias, subject, targetAlias, target, bool)
 }
 
 /** @section Strings */
@@ -330,7 +317,6 @@ function stringsEqual(subject, target, caseSensitive = true) {
 }
 
 /** @section Null */
-/** @todo migrate to Expects */
 function expectToBeNull(alias, param, bool = true) {
     expects.null.toBe(alias, param, bool)
 }
@@ -388,6 +374,7 @@ function expectObjectsMismatch(subjectAlias, subject, targetAlias, target, bool 
     })
 }
 
+
 /** @section Error Throws */
 function ExpectToThrowError(subjectAlias, subject, param = null, bool = true, error = Error) {
         /** 
@@ -406,9 +393,20 @@ function ExpectToThrowError(subjectAlias, subject, param = null, bool = true, er
         })
 }
 
-/** @todo migrate to Expects */
 function expectConstructorToThrowError(nameStr, className, param = null, bool = true, error = Error) {
-    expects.constructor.toThrow(nameStr, className, param, bool, error)
+/** @deprecated */
+    const description = 
+                `${getCounter()} ${classAlias} constructor ${throwsAnError(bool)} ${error.name}`
+
+            const instance = () => {
+                new className(param)
+            }
+
+            it(description, () => {
+                bool
+                    ? expect(instance).to.throw(error)
+                    : expect(instance).to.not.throw(error)
+            })
 }
 
 
@@ -500,7 +498,7 @@ class InvalidArrayError extends TypeError {
     }
 }
 
-class NullCheckError extends Error {
+class NullCheckError extends TypeError {
     constructor() {
         super('NullCheckError: argument is null')
     }
