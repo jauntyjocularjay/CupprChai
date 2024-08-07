@@ -5,6 +5,7 @@ import {
     contains,
     did,
     does,
+    equals,
     have,
     has,
     is,
@@ -21,41 +22,28 @@ import {
 */
 
 const expects = {
-    valueToEql: (subject, object = null, bool = true, description = null) => {
-        try {
-            nullCheck(subject)
+    primitive: {
+        toEqual: (subject, object = null, bool = true, description = null) => {
+            try {
+                nullCheck(subject)
 
-            description !== null
-                ? description = `${getCounter()} ${description}`
-                : description = `${getCounter()} '${subject}' ${matches(bool)} '${object}'`
+                description !== null
+                    ? description = `${getCounter()} ${description}`
+                    : description = `${getCounter()} '${subject}' ${matches(bool)} '${object}'`
 
-            it(description, () => {
-                bool
-                    ? expect(subject).to.eql(object)
-                    : expect(subject).to.not.eql(object)
-            })
-        } catch (error) {
-            const description = `${getCounter()} '${subject}' ${matches(bool)} '${object}'`
+                it(description, () => {
+                    bool
+                        ? expect(subject).to.eql(object)
+                        : expect(subject).to.not.eql(object)
+                })
+            } catch (error) {
+                const description = `${getCounter()} '${subject}' ${matches(bool)} '${object}'`
 
-            it(description + throwsAnError, () => {
-                expect(true).to.eql(false)
-            })
+                it(description + throwsAnError, () => {
+                    expect(true).to.eql(false)
+                })
 
-        }
-    },
-    constructor: {
-        toThrow: (nameStr, bool = true, error = Error, className, ...params) => {
-            const description = `${getCounter()} ${nameStr} constructor ${throwsAnError(bool)} ${error.name}`
-
-            const instance = () => {
-                new className(params)
             }
-
-            it(description, () => {
-                bool
-                    ? expect(instance).to.throw(error)
-                    : expect(instance).to.not.throw(error)
-            })
         },
     },
     boolean: {
@@ -181,6 +169,41 @@ const expects = {
             })
         }
     },
+    object: {
+        constructorToThrow: (classAlias, bool = true, error = Error, className, ...params) => {
+        /** @todo Finish */
+            const description = `${getCounter()} ${classAlias} constructor ${throwsAnError(bool)}: ${error.name}`
+
+            const instance = () => {
+                const a = new className(params)
+            }
+
+            it(description, () => {
+                bool
+                    ? expect(instance()).to.throw(error)
+                    : expect(instance()).to.not.throw(error)
+            })
+        },
+        toMatch: (subjectAlias='subject object', subject={}, targetAlias='target object', target={}) => {
+        /** @todo finish*/
+            const description = `${subjectAlias} ${has()} all off the properties ${targetAlias} has`
+            const subjectKey = Object.keys(subject)
+            const targetKey = Object.keys(target)
+            let length = 0
+
+            if(subjectKey.length > targetKey.length){
+                length = targetKey.length
+            } else {
+                length = subjectKey.length
+            }
+
+            for(let i=0; i < length; i++){
+                it(`${getCounter()} `, () => {
+                    expects.array.toInclude(subjectKey[i], targetKey[i])
+                })
+            }
+        },
+    },
     function: {
         toThrow: (subjectAlias, subjectFunction, error = Error, bool = true) => {
         /** 
@@ -196,11 +219,11 @@ const expects = {
                     : expect(fn).to.not.throw(error)
             })
         }
-    }
+    },
 }
 
 function expectValuesToMatch(subject, object = null, bool = true, description = null) {
-    expects.valueToEql(subject, object, bool, description)
+    expects.primitive.toEqual(subject, object, bool, description)
 }
 
 function expectValuesToEqual(subjectAlias, subject, targetAlias, target = null, bool = true) {
@@ -351,7 +374,7 @@ function objectsAreEquivalent(subjectAlias, subject, targetAlias, target) {
 /** @todo migrate to Expects */
 function expectObjectsAreEqual(subjectAlias, subject, targetAlias, target, bool = true) {
     /*** @todo write tests ***/
-    const description = `${getCounter()} '${subjectAlias}' ${matches(bool)} '${targetAlias}'`
+    const description = `${getCounter()} '${subjectAlias}' ${equals(bool)} '${targetAlias}'`
 
     it(description, () => {
         const result = objectsEqual(subject, target)
@@ -393,8 +416,8 @@ function ExpectToThrowError(subjectAlias, subject, param = null, bool = true, er
         })
 }
 
-function expectConstructorToThrowError(nameStr, className, param = null, bool = true, error = Error) {
 /** @deprecated */
+function expectConstructorToThrowError(nameStr, className, param = null, bool = true, error = Error) {
     const description = 
                 `${getCounter()} ${classAlias} constructor ${throwsAnError(bool)} ${error.name}`
 
